@@ -1,0 +1,1623 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F6F7F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0F17" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Flipkontor">
+<meta name="description" content="Lager, Geld und Verkäufe für dein Vinted-Reselling.">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Flipkontor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: Kopfzeile mit Pill-Reitern, eine Hauptaussage je Bildschirm, Karten auf ruhigem Grund, alles Weitere eingeklappt. Abstände 4/8/12/16/24/32/48. */
+:root{
+  --bg:#F6F7F9; --surface:#FFFFFF; --sunk:#F1F5F9; --line:#E5E8EE;
+  --ink:#0F172A; --muted:#5B6678;
+  --accent:#4F46E5; --accent-hover:#4338CA; --accent-soft:#EEF0FF; --accent-ink:#4338CA; --on-accent:#FFFFFF;
+  --good:#047857; --good-soft:#E7F8F0;
+  --bad:#B42318; --bad-soft:#FDECEA;
+  --warn:#92400E; --warn-soft:#FEF3E2;
+  --tag:#FFD23F; --tag-ink:#1A1A1A;
+  --chip:#475569; --chip-bg:#F1F5F9;
+  --shadow-sm:0 1px 2px rgb(15 23 42 / .05);
+  --shadow-md:0 4px 16px rgb(15 23 42 / .08);
+  --shadow-lg:0 16px 48px rgb(15 23 42 / .16);
+  --scrim:rgb(15 23 42 / .45);
+  --card-edge:transparent;
+  --pot-1:var(--accent); --pot-2:#0EA5E9; --pot-3:#14B8A6; --pot-4:#F59E0B;
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r-sm:8px; --r:12px; --r-lg:16px; --r-xl:24px; --pill:999px;
+  --s0:4px; --s1:8px; --s15:12px; --s2:16px; --s3:24px; --s4:32px; --s6:48px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  interpolate-size:allow-keywords;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B0F17; --surface:#121826; --sunk:#1A2233; --line:#232C3D;
+  --ink:#E6EAF2; --muted:#94A3B8;
+  --accent:#8B93FF; --accent-hover:#A5ABFF; --accent-soft:#1E2140; --accent-ink:#B4BAFF; --on-accent:#0B0F17;
+  --good:#4ADE80; --good-soft:#0F2A1C;
+  --bad:#FB7185; --bad-soft:#2D1418;
+  --warn:#FBBF24; --warn-soft:#2B2010;
+  --tag:#FFD23F; --tag-ink:#1A1A1A;
+  --chip:#CBD5E1; --chip-bg:#1A2233;
+  --shadow-sm:0 1px 2px rgb(0 0 0 / .4);
+  --shadow-md:0 4px 16px rgb(0 0 0 / .4);
+  --shadow-lg:0 16px 48px rgb(0 0 0 / .6);
+  --scrim:rgb(0 0 0 / .55);
+  --card-edge:#232C3D;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B0F17; --surface:#121826; --sunk:#1A2233; --line:#232C3D;
+  --ink:#E6EAF2; --muted:#94A3B8;
+  --accent:#8B93FF; --accent-hover:#A5ABFF; --accent-soft:#1E2140; --accent-ink:#B4BAFF; --on-accent:#0B0F17;
+  --good:#4ADE80; --good-soft:#0F2A1C;
+  --bad:#FB7185; --bad-soft:#2D1418;
+  --warn:#FBBF24; --warn-soft:#2B2010;
+  --tag:#FFD23F; --tag-ink:#1A1A1A;
+  --chip:#CBD5E1; --chip-bg:#1A2233;
+  --shadow-sm:0 1px 2px rgb(0 0 0 / .4);
+  --shadow-md:0 4px 16px rgb(0 0 0 / .4);
+  --shadow-lg:0 16px 48px rgb(0 0 0 / .6);
+  --scrim:rgb(0 0 0 / .55);
+  --card-edge:#232C3D;
+  color-scheme:dark}
+
+/* Grundlagen */
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h2{font-size:24px;line-height:1.2;font-weight:700}
+h3{font-size:17px;line-height:1.3;font-weight:600}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+.money,.code{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.muted.small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+button,input,select,textarea{font:inherit;color:inherit}
+button,a,summary,label,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:none;box-shadow:0 0 0 2px var(--accent),0 0 0 5px var(--accent-soft)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* Kopfzeile und Reiter */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;isolation:isolate}
+.top::before{content:"";position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--bg) 85%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.top.scrolled{box-shadow:0 1px 0 var(--line)}
+.top-in{max-width:1100px;margin:0 auto;padding:var(--s15) var(--s2);display:flex;align-items:center;gap:var(--s2);min-height:68px}
+.brand{display:flex;align-items:center;gap:var(--s1);margin-right:auto;min-width:0}
+.brand-mark{width:32px;height:32px;display:block;flex:none}
+.brand h1{font-size:20px;line-height:1.2;font-weight:700}
+.sync{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block;margin-left:var(--s0);cursor:help;flex:none}
+.sync.on{background:var(--good)}
+.iconbtn{border:0;background:none;width:44px;height:44px;border-radius:var(--r);display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.iconbtn:hover{background:var(--sunk);color:var(--ink)}
+.iconbtn svg{width:22px;height:22px}
+.tabbar{max-width:1100px;margin:0 auto;padding:0 var(--s2) var(--s15)}
+.tabs{display:inline-flex;gap:var(--s0);background:var(--sunk);padding:var(--s0);border-radius:var(--pill)}
+.tab{border:0;background:none;min-height:36px;padding:0 var(--s2);border-radius:var(--pill);cursor:pointer;color:var(--muted);font-weight:500;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="true"]{color:var(--ink);background:var(--surface);box-shadow:var(--shadow-sm)}
+.tab svg{display:none;stroke-width:2}
+
+/* Seitenraster */
+main{max-width:1100px;margin:0 auto;padding:var(--s3) var(--s2) 128px;display:grid;gap:var(--s3)}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);flex-wrap:wrap}
+.panel{background:var(--surface);border:1px solid var(--card-edge);border-radius:var(--r-lg);padding:var(--s3);box-shadow:var(--shadow-sm);min-width:0}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:var(--s1);margin-bottom:var(--s2)}
+.stack{display:grid;gap:var(--s2)}
+.row{display:flex;gap:var(--s1);flex-wrap:wrap;align-items:center}
+
+/* Hauptaussage */
+.hero{display:grid;gap:var(--s1)}
+.hero-l{font-size:13px;font-weight:500;color:var(--muted)}
+.hero-v{font:600 40px/1.1 var(--f-mono);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.hero-s{color:var(--muted)}
+.hero-goal{display:grid;gap:var(--s1);max-width:420px;margin-top:var(--s1)}
+.lead{font-size:18px;line-height:1.45;max-width:60ch}
+
+/* Fortschritt */
+.bar{height:8px;background:var(--sunk);border-radius:var(--pill);overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--accent);border-radius:var(--pill)}
+.bar.good>span{background:var(--good)}
+.bar.tagbar>span{background:var(--tag)}
+
+/* Zu tun */
+.todo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--s15)}
+.todo-card{display:flex;align-items:center;gap:var(--s2);min-height:88px;padding:var(--s2) 20px;border:1px solid var(--card-edge);border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-sm);cursor:pointer;text-align:left;width:100%}
+.todo-card svg{width:24px;height:24px;flex:none;color:var(--accent);stroke-width:2}
+.todo-card.done{cursor:default}
+.todo-card.done svg{color:var(--good)}
+.todo-n{font:700 24px/1 var(--f-display)}
+.todo-t{color:var(--muted);font-size:14px}
+
+/* Töpfe */
+.stackbar{display:flex;height:12px;border-radius:var(--pill);overflow:hidden;background:var(--sunk);gap:2px}
+.stackbar span{display:block;height:100%}
+.legend2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s1) var(--s2);margin-top:var(--s2)}
+.legend2 div{display:flex;align-items:center;gap:var(--s1);min-width:0;font-size:14px}
+.legend2 i{width:10px;height:10px;border-radius:3px;flex:none}
+.legend2 .nm{min-width:0;overflow-wrap:anywhere;line-height:1.3}
+.legend2 .money{flex:none}
+.pots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:var(--s15)}
+.pot{--stripe:var(--accent);border:1px solid var(--card-edge);border-radius:var(--r-lg);padding:var(--s2) 20px var(--s2) 24px;display:grid;gap:var(--s0);background:var(--surface);box-shadow:inset 4px 0 0 var(--stripe),var(--shadow-sm);min-width:0}
+.pot-v{font:600 24px/1.2 var(--f-mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.bigbtns{display:grid;grid-template-columns:1fr 1fr;gap:var(--s15)}
+.bigbtns .btn{justify-content:center;min-height:52px;font-size:16px}
+
+/* Kennzahlen */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:var(--s15)}
+.kpi,.tile{display:grid;gap:var(--s0);min-width:0;background:var(--surface);border:1px solid var(--card-edge);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);padding:var(--s2)}
+.kpi-l{font-size:13px;font-weight:500;color:var(--muted)}
+.kpi-v{font:600 28px/1.15 var(--f-mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi-s{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s15)}
+.tile .kpi-v{font-size:22px}
+
+/* Buttons */
+.btn{border:0;background:var(--accent-soft);color:var(--accent-ink);min-height:44px;padding:0 18px;border-radius:var(--r);cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:var(--s1);white-space:nowrap;position:relative}
+.btn:hover{background:color-mix(in srgb,var(--accent) 12%,var(--accent-soft))}
+.btn.primary{background:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent-hover)}
+.btn.ghost{background:transparent;color:var(--muted)}
+.btn.ghost:hover{background:var(--sunk);color:var(--ink)}
+.btn.danger{background:var(--bad-soft);color:var(--bad)}
+.btn.danger:hover{background:color-mix(in srgb,var(--bad) 12%,var(--bad-soft))}
+.btn.ghost.danger{background:transparent}
+.btn.ghost.danger:hover{background:var(--bad-soft)}
+.btn.sm{min-height:36px;padding:0 12px;font-size:14px}
+.btn.sm::after{content:"";position:absolute;inset:-4px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn svg{width:18px;height:18px}
+.fab{position:fixed;right:var(--s2);bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:30;min-height:56px;padding:0 22px 0 18px;border-radius:var(--pill);box-shadow:var(--shadow-lg);font-size:16px}
+.fab svg{width:20px;height:20px;stroke-width:2.4}
+.linkbtn{border:0;background:none;padding:var(--s0) 0;color:var(--accent-ink);cursor:pointer;font-size:14px;font-weight:500;text-align:left;position:relative}
+.linkbtn::after{content:"";position:absolute;inset:-10px -4px}
+
+/* Chips und Etikett */
+.chip{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:var(--pill);font-size:12px;font-weight:600;white-space:nowrap;background:var(--chip-bg);color:var(--chip)}
+.st-lager,.st-gelistet{background:var(--chip-bg);color:var(--chip)}
+.st-verkauft{background:var(--warn-soft);color:var(--warn)}
+.st-versendet{background:var(--accent-soft);color:var(--accent-ink)}
+.st-abgeschlossen{background:var(--good-soft);color:var(--good)}
+.chip.stale{background:var(--bad-soft);color:var(--bad)}
+.code{font-weight:600;font-size:12px;line-height:1.4;background:var(--tag);color:var(--tag-ink);padding:2px 8px;border-radius:6px;letter-spacing:.01em}
+.demo-pill{display:inline-flex;align-items:center;height:24px;font-size:12px;font-weight:600;padding:0 10px;border-radius:var(--pill);background:var(--warn-soft);color:var(--warn);white-space:nowrap}
+
+/* Eingabefelder */
+.fld{display:grid;gap:6px;min-width:0}
+.fld label{font-size:13px;font-weight:500;color:var(--muted)}
+.fld input,.fld select,.fld textarea,.searchbox input,select.more-filter{width:100%;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);min-width:0;font-size:16px}
+.fld textarea{min-height:120px;padding:10px 14px;resize:vertical;line-height:1.5}
+.fld input:focus,.fld select:focus,.fld textarea:focus,.searchbox input:focus,select.more-filter:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.fld input[aria-invalid="true"],.fld input:user-invalid{border-color:var(--bad);box-shadow:0 0 0 4px var(--bad-soft)}
+.fld select,select.more-filter{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:40px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s15) var(--s2);align-items:start}
+.form .full{grid-column:1/-1}
+
+/* Lager */
+.searchbox{position:relative;display:block}
+.searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none;stroke-width:2}
+.searchbox input{padding-left:42px;box-shadow:var(--shadow-sm)}
+.filters{display:flex;gap:var(--s1);align-items:center;flex-wrap:wrap;min-width:0}
+.seg{display:flex;background:var(--sunk);border-radius:var(--pill);padding:var(--s0);gap:var(--s0)}
+.seg button{border:0;background:none;min-height:36px;padding:0 14px;border-radius:var(--pill);cursor:pointer;color:var(--muted);font-size:14px;font-weight:500;white-space:nowrap;position:relative}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.seg-scroll{overflow-x:auto;max-width:100%;min-width:0;flex:0 1 auto;scrollbar-width:none}
+select.more-filter{width:auto;min-height:44px;border-radius:var(--pill);background-color:var(--sunk);border-color:transparent;color:var(--muted);font-size:14px;font-weight:500}
+select.more-filter.on{background-color:var(--surface);color:var(--ink);border-color:var(--line)}
+.items{display:grid;gap:var(--s15)}
+.item{display:grid;gap:var(--s15);background:var(--surface);border:1px solid var(--card-edge);border-radius:var(--r-lg);padding:var(--s15);box-shadow:var(--shadow-sm);min-width:0}
+.item:has(.item-top:active){background:var(--sunk)}
+.item-top{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:var(--s15);align-items:center;border:0;background:none;padding:0;cursor:pointer;text-align:left;width:100%;color:inherit;border-radius:var(--r)}
+.thumb{width:64px;height:64px;border-radius:var(--r);background:var(--accent-soft);object-fit:cover;display:grid;place-items:center;color:var(--accent-ink);font-size:13px;font-weight:700;letter-spacing:.02em;overflow:hidden;flex:none}
+.thumb.sm{width:44px;height:44px}
+.item-main{min-width:0;display:grid;gap:6px}
+.item-title{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-meta{display:flex;gap:var(--s1);align-items:center;font-size:13px;color:var(--muted);min-width:0;overflow:hidden;white-space:nowrap}
+.item-price{text-align:right;display:grid;gap:2px;justify-items:end;align-self:start}
+.item-price b{font:600 16px/1.3 var(--f-mono)}
+.item-price span{font-size:13px;color:var(--muted)}
+.item-price .pos,.item-price .neg{font-weight:600}
+.item-price .pos{color:var(--good)} .item-price .neg{color:var(--bad)}
+.item-steps{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);min-height:44px;padding-top:var(--s15);border-top:1px solid var(--line)}
+.step-info{display:grid;gap:6px;min-width:0;justify-items:start}
+.step-btn{min-height:40px}
+.steps{display:flex;align-items:center;width:132px}
+.steps .dot{width:10px;height:10px;border-radius:50%;background:var(--line);flex:none}
+.steps .dot.done{background:var(--accent)}
+.steps .dot.cur{background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.steps .ln{flex:1;height:2px;background:var(--line)}
+.steps .ln.done{background:var(--accent)}
+
+/* Sterne und Bewertungen */
+.stars{position:relative;display:inline-flex;line-height:0;flex:none}
+.stars-row{display:flex;gap:2px}
+.stars-row svg{flex:none}
+.stars-fg{position:absolute;left:0;top:0;overflow:hidden}
+.star-pick{display:flex;gap:var(--s0)}
+.star-btn{width:44px;height:44px;border:0;background:none;border-radius:var(--r);display:grid;place-items:center;cursor:pointer;padding:0}
+.star-btn svg{fill:var(--line)}
+.star-btn.on svg{fill:var(--tag)}
+.star-btn:hover{background:var(--sunk)}
+.rating-v{font:600 40px/1 var(--f-mono);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.dist{display:grid;gap:var(--s1)}
+.dist-row{display:grid;grid-template-columns:28px minmax(0,1fr) 28px;gap:var(--s15);align-items:center;font-size:14px}
+.dist-row .num:last-child{text-align:right}
+.rev-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:var(--s15)}
+.rev-card{background:var(--surface);border:1px solid var(--card-edge);border-radius:var(--r-lg);padding:var(--s2);display:grid;gap:var(--s1);align-content:start;cursor:pointer;box-shadow:var(--shadow-sm)}
+.rev-text.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rev-more{justify-self:start}
+
+/* Listen, Ranglisten, Tabellen */
+.list{list-style:none;margin:0;padding:0;display:grid;gap:var(--s15)}
+.list li{display:flex;justify-content:space-between;gap:var(--s15);align-items:center}
+.list .grow{min-width:0;display:grid;gap:2px}
+.rank{display:grid;gap:var(--s15)}
+.rank-row{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:6px var(--s15);align-items:center}
+.rank-row .pl{font-weight:700;color:var(--muted)}
+.rank-row .bar{grid-column:2/-1}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:500;font-size:13px;color:var(--muted);padding:0 var(--s15) var(--s1);white-space:nowrap}
+td{height:48px;padding:0 var(--s15);vertical-align:middle;border-top:1px solid var(--line)}
+tbody tr:hover td{background:var(--sunk)}
+td.r,th.r{text-align:right}
+tr.subrow td{font-size:13px;color:var(--muted)}
+tr.subrow td:first-child{padding-left:28px}
+.tablewrap{overflow-x:auto;margin:0 calc(-1 * var(--s15))}
+
+/* Aufklappen */
+details.fold{background:var(--surface);border:1px solid var(--card-edge);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);min-width:0}
+details.fold.inner{background:none;border:0;box-shadow:none;border-radius:0}
+.fold>summary{list-style:none;display:flex;align-items:center;gap:var(--s1);min-height:56px;padding:0 var(--s3);font-size:16px;font-weight:600;cursor:pointer;border-radius:var(--r-lg)}
+.fold>summary:hover .chev{color:var(--ink)}
+.fold.inner>summary{padding:0;color:var(--accent-ink);font-size:15px;min-height:44px}
+.fold>summary::-webkit-details-marker{display:none}
+.fold-t{flex:1;min-width:0}
+.fold-i{font-weight:500;font-size:13px;color:var(--muted);white-space:nowrap}
+.chev{width:20px;height:20px;flex:none;color:var(--muted)}
+.fold[open]>summary .chev{transform:rotate(180deg)}
+.fold-b{padding:0 var(--s3) var(--s3);display:grid;gap:var(--s2)}
+.fold.inner>.fold-b{padding:var(--s1) 0 0}
+.fold.danger>summary{color:var(--bad)}
+
+/* Info-Tipp und kleine Fenster */
+details.tip{display:inline-block;position:relative;vertical-align:middle}
+details.tip>summary{list-style:none;width:24px;height:24px;border-radius:50%;background:var(--sunk);color:var(--muted);font:600 13px/24px var(--f-body);text-align:center;cursor:pointer;position:relative}
+details.tip>summary::after{content:"";position:absolute;inset:-10px}
+details.tip>summary::-webkit-details-marker{display:none}
+.tip-b{position:absolute;right:0;top:32px;z-index:15;width:min(300px,80vw);background:var(--ink);color:var(--bg);padding:var(--s15) var(--s2);border-radius:var(--r);box-shadow:var(--shadow-lg);font-size:14px;font-weight:400;line-height:1.45;white-space:normal}
+.pop{position:relative}
+.pop>summary{list-style:none;cursor:pointer}
+.pop>summary::-webkit-details-marker{display:none}
+.pop-b{position:absolute;left:0;top:36px;z-index:30;width:min(300px,calc(100vw - 32px));background:var(--surface);color:var(--ink);border:1px solid var(--card-edge);border-radius:var(--r-lg);padding:var(--s2);box-shadow:var(--shadow-lg);display:grid;gap:var(--s15);font-size:14px;line-height:1.45}
+
+/* Steuer */
+.ampel{display:flex;gap:var(--s2);align-items:flex-start}
+.ampel-dot{width:16px;height:16px;border-radius:50%;flex:none;margin-top:4px}
+.ampel.green .ampel-dot{background:var(--good);box-shadow:0 0 0 4px var(--good-soft)}
+.ampel.yellow .ampel-dot{background:var(--warn);box-shadow:0 0 0 4px var(--warn-soft)}
+.ampel.red .ampel-dot{background:var(--bad);box-shadow:0 0 0 4px var(--bad-soft)}
+.duo{display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap}
+
+/* Hinweise */
+.note{position:relative;border-radius:var(--r);padding:var(--s15) 14px var(--s15) 40px;font-size:14px;background:var(--accent-soft);color:var(--ink)}
+.note::before{content:"";position:absolute;left:14px;top:15px;width:16px;height:16px;background:var(--accent-ink);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z'/%3E%3C/svg%3E") center/contain no-repeat}
+.note.warn,.note#pot-confirm{background:var(--warn-soft)}
+.note.warn::before,.note#pot-confirm::before{background:var(--warn);
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 1 21h22zm1 15h-2v-2h2zm0-4h-2V9h2z'/%3E%3C/svg%3E");
+          mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 1 21h22zm1 15h-2v-2h2zm0-4h-2V9h2z'/%3E%3C/svg%3E")}
+.note.good{background:var(--good-soft)}
+.note.good::before{background:var(--good);
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z'/%3E%3C/svg%3E");
+          mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z'/%3E%3C/svg%3E")}
+
+/* Leere Zustände, Laden */
+.empty{text-align:center;padding:var(--s6) var(--s2);display:grid;gap:var(--s15);justify-items:center}
+.empty h2{font-size:18px;font-weight:600}
+.empty p{color:var(--muted);max-width:40ch}
+.empty .row{margin-top:var(--s1)}
+.empty-ic{width:80px;height:80px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;margin-bottom:var(--s1)}
+.empty-ic svg{width:48px;height:48px}
+.empty-ic .brand-mark{width:48px;height:48px}
+.skel{border-radius:var(--r);background:linear-gradient(90deg,var(--sunk) 0%,color-mix(in srgb,var(--sunk) 55%,var(--surface)) 50%,var(--sunk) 100%);background-size:200% 100%}
+.skel-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s15)}
+
+/* Diagramm */
+svg.chart{display:block;width:100%;max-height:240px}
+svg.chart text{fill:var(--muted);font:12px var(--f-body)}
+svg.chart .gl{stroke:var(--line);stroke-dasharray:2 4}
+svg.chart .rev{fill:var(--accent-soft)}
+svg.chart .pro{fill:var(--accent)}
+svg.chart .loss{fill:var(--bad)}
+svg.chart .m{opacity:.7}
+svg.chart .m.cur{opacity:1}
+svg.chart .m.cur text{fill:var(--ink);font-weight:600}
+.legend{display:flex;gap:var(--s2);font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* Dialoge und Sheets */
+dialog{border:1px solid var(--card-edge);padding:0;border-radius:var(--r-xl);background:var(--surface);color:var(--ink);width:min(600px,calc(100vw - 32px));max-height:calc(100dvh - 32px);box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px)}
+dialog[open]{opacity:1;transform:none}
+dialog.closing{opacity:0;transform:translateY(16px)}
+dialog::backdrop{background:var(--scrim);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+dialog.closing::backdrop{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+@starting-style{dialog[open]{opacity:0;transform:translateY(16px)}dialog[open]::backdrop{background:transparent}}
+.dlg{display:grid;grid-template-rows:auto minmax(0,1fr) auto;max-height:calc(100dvh - 32px)}
+.dlg-h{position:relative;display:flex;justify-content:space-between;align-items:center;padding:var(--s2) var(--s2) var(--s15) var(--s3);gap:var(--s15)}
+.dlg-h h3{font-size:18px}
+.dlg-b{overflow:auto;padding:0 var(--s3) var(--s2);display:grid;gap:var(--s2)}
+.dlg-b details.fold{background:var(--sunk);border:0;box-shadow:none}
+.dlg-b details.fold>summary{padding:0 var(--s2);min-height:52px}
+.dlg-b details.fold>.fold-b{padding:0 var(--s2) var(--s2)}
+.dlg-f{display:flex;gap:var(--s1);justify-content:flex-end;padding:var(--s15) var(--s3) var(--s2);flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);background:var(--surface)}
+.profit-line{flex-basis:100%;display:grid;gap:var(--s0)}
+.profit-btn{border:0;background:none;padding:var(--s0) 0;min-height:36px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:15px;text-align:left}
+.profit-btn svg{width:16px;height:16px;color:var(--muted)}
+.alloc{display:flex;flex-wrap:wrap;gap:var(--s0) var(--s2);font-size:13px;color:var(--muted)}
+.photo{display:flex;gap:var(--s2);align-items:center}
+.photo-pick{display:flex;align-items:center;gap:var(--s2);cursor:pointer;border-radius:var(--r-lg);padding:var(--s1);margin:calc(-1 * var(--s1));flex:1;min-width:0}
+.photo-pick:hover{background:var(--sunk)}
+.photo-pick .ph{width:72px;height:72px;border-radius:var(--r);background:var(--accent-soft);display:grid;place-items:center;color:var(--accent-ink);overflow:hidden;flex:none}
+.photo-pick .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-pick .ph svg{width:26px;height:26px;stroke-width:2}
+.photo-pick b{display:block;font-weight:600;color:var(--accent-ink)}
+.photo-pick span{min-width:0}
+.calc{background:var(--sunk);border-radius:var(--r);padding:var(--s15) var(--s2);display:grid;gap:var(--s0);font-size:14px}
+.calc div{display:flex;justify-content:space-between;gap:var(--s1)}
+.calc .tot{padding-top:var(--s1);margin-top:var(--s0);border-top:1px solid var(--line);font-weight:600}
+.savebar{position:sticky;bottom:calc(var(--s2) + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:center;gap:var(--s2);background:var(--ink);color:var(--bg);padding:var(--s15) var(--s15) var(--s15) 20px;border-radius:var(--r-lg);box-shadow:var(--shadow-lg);z-index:25}
+
+/* Toast */
+.toast{position:fixed;left:0;right:0;margin:0 auto;width:max-content;top:calc(env(safe-area-inset-top,0px) + 124px);transform:none;display:flex;align-items:center;gap:var(--s15);background:var(--ink);color:var(--bg);padding:var(--s15) 18px;border-radius:var(--pill);box-shadow:var(--shadow-lg);font-size:14px;font-weight:500;z-index:100;max-width:calc(100vw - 32px)}
+.toast.out{opacity:0;transform:translateY(-12px);pointer-events:none}
+.toast>span{min-width:0}
+.toast .ok-ic{width:18px;height:18px;flex:none;color:var(--good);stroke-width:2.6}
+.toast-undo{border:0;background:color-mix(in srgb,var(--bg) 18%,transparent);color:var(--bg);font-weight:600;cursor:pointer;min-height:32px;padding:0 var(--s15);border-radius:var(--pill);white-space:nowrap}
+.fab.away{transform:translateY(160%);opacity:0;pointer-events:none}
+
+/* Bewegung */
+@media (prefers-reduced-motion:no-preference){
+  .btn,.todo-card,.item,.item-top,.tab,.iconbtn,.star-btn,.rev-card,.photo-pick,.seg button,.linkbtn,.fold>summary,td,select,input,textarea,.toast-undo{transition:background-color .15s var(--ease),color .15s var(--ease),box-shadow .15s var(--ease),transform .15s var(--ease),border-color .15s var(--ease),opacity .15s var(--ease)}
+  .btn:active{transform:scale(.98)}
+  .todo-card:active,.iconbtn:active,.star-btn:active,.rev-card:active,.photo-pick:active{transform:scale(.98)}
+  @media (hover:hover){
+    .item:hover,.todo-card:hover,.rev-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+  }
+  .steps .dot,.steps .ln{transition:background-color .35s var(--ease),box-shadow .35s var(--ease)}
+  .bar>span,.stackbar span{transition:width .4s var(--ease);animation:fk-grow .4s var(--ease) both}
+  .chev{transition:transform .2s var(--ease)}
+  details.fold::details-content{block-size:0;overflow-y:clip;transition:block-size .25s var(--ease),content-visibility .25s allow-discrete}
+  details.fold[open]::details-content{block-size:auto}
+  main.enter>*{animation:fk-tab .15s var(--ease) both}
+  .item.added,.rev-card.added{animation:fk-in .22s var(--ease) both}
+  .item.flash{animation:fk-flash 1s var(--ease)}
+  .skel{animation:fk-shimmer 1.4s linear infinite}
+  dialog{transition:opacity .22s var(--ease),transform .22s var(--ease),overlay .22s allow-discrete,display .22s allow-discrete}
+  dialog::backdrop{transition:background-color .22s,backdrop-filter .22s,overlay .22s allow-discrete,display .22s allow-discrete}
+  .toast{transition:opacity .2s var(--ease),transform .22s var(--ease)}
+  .fab{transition:transform .25s var(--ease),opacity .2s,background-color .15s,box-shadow .15s}
+  .star-btn.on svg{animation:fk-pop .25s var(--ease)}
+  .pop-b,.tip-b{animation:fk-in .15s var(--ease)}
+}
+@keyframes fk-in{from{opacity:0;transform:translateY(8px)}}
+@keyframes fk-tab{from{opacity:0;transform:translateY(4px)}}
+@keyframes fk-grow{from{width:0}}
+@keyframes fk-flash{0%{box-shadow:0 0 0 2px var(--accent)}100%{box-shadow:0 0 0 2px transparent}}
+@keyframes fk-pop{50%{transform:scale(1.2)}}
+@keyframes fk-shimmer{to{background-position:-200% 0}}
+
+/* Handy */
+@media (max-width:760px){
+  .top-in{min-height:64px;padding:var(--s1) var(--s2)}
+  .tabbar{padding:0}
+  .tabs{position:fixed;left:0;right:0;bottom:0;display:flex;margin:0;border-radius:0;gap:0;background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:6px var(--s1) calc(6px + env(safe-area-inset-bottom,0px));justify-content:space-around;z-index:40}
+  .tab{display:grid;justify-items:center;gap:2px;min-height:56px;font-size:12px;padding:var(--s0) 2px;flex:1;border-radius:var(--r);min-width:0}
+  .tab svg{display:block;width:48px;height:28px;padding:3px 13px;border-radius:var(--pill);stroke-width:2}
+  .tab[aria-current="true"]{background:none;box-shadow:none;color:var(--accent)}
+  .tab[aria-current="true"] svg{background:var(--accent-soft)}
+  main{gap:var(--s2);padding-top:var(--s1)}
+  .panel{padding:var(--s2)}
+  .fold>summary{padding:0 var(--s2)} .fold-b{padding:0 var(--s2) var(--s2)}
+  .hero-v,.rating-v{font-size:36px}
+  .kpi-v{font-size:22px}
+  .tile .kpi-v{font-size:18px}
+  .tile{padding:var(--s15)}
+  .tiles .kpi-l{font-size:12px}
+  .pots{grid-template-columns:1fr 1fr}
+  .pot{padding:var(--s15) var(--s15) var(--s15) 20px}
+  .pot-v{font-size:20px}
+  .fab{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .savebar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .toast{top:calc(env(safe-area-inset-top,0px) + 72px)}
+  .form{grid-template-columns:minmax(0,1fr)}
+  .tablewrap{margin:0}
+  .seg button,.linkbtn{min-height:40px}
+  dialog{margin:auto 0 0;width:100%;max-width:100%;border-radius:var(--r-xl) var(--r-xl) 0 0;border-width:1px 0 0;max-height:92dvh}
+  .dlg{max-height:92dvh}
+  .dlg-h{padding:28px var(--s2) var(--s15) var(--s2)}
+  .dlg-h::before{content:"";position:absolute;top:var(--s1);left:50%;width:36px;height:4px;margin-left:-18px;border-radius:var(--pill);background:var(--line)}
+  .dlg-b{padding:0 var(--s2) var(--s2)}
+  .dlg-f{position:sticky;bottom:0;padding:var(--s15) var(--s2) calc(var(--s15) + env(safe-area-inset-bottom,0px))}
+  .dlg-f .btn.primary{flex:1 1 100%;order:10;min-height:48px}
+  .pop-b{position:fixed;left:16px;right:16px;width:auto;top:calc(env(safe-area-inset-top,0px) + 64px)}
+  .tip-b{position:fixed;left:16px;right:16px;width:auto;top:auto;margin-top:var(--s1)}
+  .iconbtn{width:44px;height:44px}
+}
+</style>
+<style>html{-webkit-text-size-adjust:100%}body{margin:0;padding-top:env(safe-area-inset-top,0px)}img{max-width:100%}</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-12 16 16)"><path d="M5 10.5A3.5 3.5 0 0 1 8.5 7H21l7 9-7 9H8.5A3.5 3.5 0 0 1 5 21.5z" fill="var(--tag)"/><circle cx="21.2" cy="16" r="2.1" fill="var(--bg)"/><path d="M9.5 13h6M9.5 16h4.5M9.5 19h3" stroke="var(--tag-ink)" stroke-width="1.8" stroke-linecap="round"/></g></svg><h1>Flipkontor</h1><span class="sync" id="sync" title="Lädt …" role="img" aria-label="Lädt …"></span><span id="demo-slot"></span></div>
+    <button class="iconbtn" data-tab="setup" aria-label="Einstellungen" title="Einstellungen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+  </div>
+  <div class="tabbar"><nav class="tabs" id="tabs" aria-label="Bereiche"></nav></div>
+</header>
+<main id="app">
+  <div class="stack"><div class="skel" style="height:16px;width:140px"></div><div class="skel" style="height:44px;width:220px"></div></div><div class="skel-row"><div class="skel" style="height:88px"></div><div class="skel" style="height:88px"></div><div class="skel" style="height:88px"></div></div><div class="skel" style="height:96px"></div><div class="skel" style="height:96px"></div><div class="skel" style="height:120px"></div><p class="sr-only">Dein Lager wird geladen.</p>
+</main>
+<button class="btn primary fab" id="fab" data-act="new-item" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Artikel</button>
+<dialog id="dlg"></dialog>
+<script src="https://cdn.jsdelivr.net/npm/morphdom@2.7.4/dist/morphdom-umd.min.js"></script>
+
+<script>
+"use strict";
+/* ---------- Grundlagen ---------- */
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const eur = new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"});
+const eur0 = new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:0});
+const money = v => eur.format(+v || 0);
+const money0 = v => eur0.format(+v || 0);
+const n = v => { const x = parseFloat(String(v ?? "").replace(",", ".")); return isFinite(x) ? x : 0; };
+const pad2 = x => String(x).padStart(2,"0");
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; };
+const daysBetween = (a,b=today()) => Math.round((new Date(b) - new Date(a)) / 864e5);
+const addDays = (d,k) => { const x = new Date(d); x.setUTCDate(x.getUTCDate()+k); return x.toISOString().slice(0,10); };
+const minDate = (a,b) => a < b ? a : b;
+const fmtDate = d => d ? new Date(d).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"2-digit"}) : "–";
+const fmt1 = v => (Math.round(v*10)/10).toFixed(1).replace(".",",");
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const monthKey = d => (d||"").slice(0,7);
+const MONTHS = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+
+const STATUS = {lager:"Im Lager", gelistet:"Online", verkauft:"Verkauft", versendet:"Versendet", abgeschlossen:"Abgeschlossen"};
+const STEPS = ["lager","gelistet","verkauft","versendet","abgeschlossen"];
+const SOLD = s => s === "verkauft" || s === "versendet" || s === "abgeschlossen";
+const CONDITIONS = ["Neu mit Etikett","Neu ohne Etikett","Sehr gut","Gut","Zufriedenstellend"];
+const EXP_CATS = ["Verpackung","Porto","Fahrtkosten","Werbung/Push","Zubehör","Gebühren","Entnahme","Sonstiges"];
+const SUPPLIER = "Supplier";
+
+const DEFAULT_POTS = () => [
+  {id:"reinvest", name:"Wiedereinkauf", pct:40, start:0},
+  {id:"steuer", name:"Steuerrücklage", pct:25, start:0},
+  {id:"privat", name:"Gewinn privat", pct:25, start:0},
+  {id:"puffer", name:"Puffer & Material", pct:10, start:0}
+];
+const DEFAULT_SETTINGS = () => ({
+  pots: DEFAULT_POTS(),
+  staleDays:45, feePct:0, feeFix:0,
+  goals:{profit:400, revenue:1200, sold:40},
+  sources:[SUPPLIER,"Flohmarkt","Second-Hand-Laden","Vinted-Einkauf","Kleinanzeigen","Sozialkaufhaus","Eigener Kleiderschrank"],
+  categories:["Jacken","Pullover","Hosen","Schuhe","Taschen","Accessoires","Sonstiges"],
+  potRedirects:{}, seq:0, demo:false
+});
+function normSettings(raw){
+  const s = Object.assign(DEFAULT_SETTINGS(), raw || {});
+  if (!Array.isArray(s.sources)) s.sources = DEFAULT_SETTINGS().sources;
+  if (!s.sources.includes(SUPPLIER)) s.sources = [SUPPLIER, ...s.sources];
+  if (!s.potRedirects || typeof s.potRedirects !== "object") s.potRedirects = {};
+  if (!Array.isArray(s.pots) || !s.pots.length) s.pots = DEFAULT_POTS();
+  return s;
+}
+
+const S = { items:[], expenses:[], settings:DEFAULT_SETTINGS(), mode:"loading", tab:"start", anaSeg:"sales",
+  filter:{status:"aktiv", q:""}, ready:false, year:new Date().getFullYear(), dirty:false, potRemove:null };
+try { const t = localStorage.getItem("fk-tab"); if (t) S.tab = t; const a = localStorage.getItem("fk-ana"); if (a) S.anaSeg = a; } catch(e){}
+if (S.tab === "steuer"){ S.tab = "analyse"; S.anaSeg = "steuer"; }
+
+/* ---------- Berechnungen ---------- */
+const hasPot = (id, set = S.settings) => set.pots.some(p => p.id === id);
+function itemFee(it){ return it.fee != null && it.fee !== "" ? n(it.fee) : n(it.sellPrice) * S.settings.feePct/100 + (SOLD(it.status) ? n(S.settings.feeFix) : 0); }
+function itemNet(it){ return n(it.sellPrice) - itemFee(it) - n(it.shipCost); }
+function itemProfit(it){ return itemNet(it) - n(it.buyPrice); }
+function allocate(it){
+  const net = itemNet(it), profit = net - n(it.buyPrice), out = {};
+  const reinvest = hasPot("reinvest");
+  S.settings.pots.forEach(p => out[p.id] = 0);
+  if (profit > 0){
+    S.settings.pots.forEach(p => out[p.id] = Math.round(profit * p.pct) / 100);
+    if (reinvest) out.reinvest = (out.reinvest||0) + n(it.buyPrice);
+  } else if (reinvest) out.reinvest = net;
+  return out;
+}
+function soldItems(filterFn = () => true){ return S.items.filter(i => SOLD(i.status) && i.sellDate && filterFn(i)); }
+function isStale(it){ return (it.status==="lager"||it.status==="gelistet") && daysBetween(it.listedAt||it.buyDate||today()) > S.settings.staleDays; }
+function resolvePot(id, set = S.settings){
+  let k = id, guard = 0;
+  while (!hasPot(k, set) && set.potRedirects?.[k] && guard++ < 20) k = set.potRedirects[k];
+  return k;
+}
+function potBalances(set = S.settings){
+  const b = {}; set.pots.forEach(p => b[p.id] = n(p.start));
+  const add = (k, v) => { k = resolvePot(k, set); if (k in b) b[k] += v; };
+  const saved = S.settings; S.settings = set;
+  try { soldItems().forEach(it => { const a = it.alloc || allocate(it); for (const k in a) add(k, a[k]); }); }
+  finally { S.settings = saved; }
+  if ("reinvest" in b) S.items.forEach(it => { b.reinvest -= n(it.buyPrice); });
+  S.expenses.forEach(e => add(e.pot, -n(e.amount)));
+  return b;
+}
+/* Startguthaben so setzen, dass jeder Topf den gewünschten Saldo hat (bei Entfernen/Wiederherstellen von Töpfen) */
+function rebalance(cand, desired){
+  const after = potBalances(cand);
+  cand.pots.forEach(p => { if (p.id in desired) p.start = Math.round((n(p.start) + desired[p.id] - after[p.id]) * 100) / 100; });
+}
+function periodStats(pred){
+  const s = soldItems(i => pred(i.sellDate));
+  const revenue = s.reduce((a,i)=>a+n(i.sellPrice),0);
+  const gross = s.reduce((a,i)=>a+itemProfit(i),0);
+  const cogs = s.reduce((a,i)=>a+n(i.buyPrice),0);
+  const fees = s.reduce((a,i)=>a+itemFee(i)+n(i.shipCost),0);
+  const exp = S.expenses.filter(e => e.category!=="Entnahme" && pred(e.date)).reduce((a,e)=>a+n(e.amount),0);
+  return {count:s.length, revenue, gross, cogs, fees, exp, net:gross-exp, margin: revenue ? gross/revenue : 0};
+}
+
+/* ---------- Speicher: db (pro Person privat) oder Browser ---------- */
+const LS_KEY = "flipkontor-v1";
+const store = {
+  base:null,
+  async init(){
+    let db = null, user = null;
+    if (window.claude?.use){
+      try { [db, user] = await Promise.all([claude.use("db"), claude.use("user")]); } catch(e){}
+    }
+    let id = null;
+    if (db && user){ try { id = await user.id(); } catch(e){} }
+    if (db && id){ this.useDb(db, id); return; }
+    this.useLocal();
+  },
+  useDb(db, id){
+    S.mode = "db";
+    this.base = db.doc(`data/users/${id}/store`);
+    let got = {s:false,i:false,e:false};
+    const done = k => { got[k]=true; if (got.s&&got.i&&got.e && !S.ready){ S.ready = true; } render(); };
+    const fail = err => { if (err?.code === "revoked" || err?.code === "not_granted"){ toast("Speichern ist hier nicht möglich. Wechsle auf lokalen Speicher."); this.useLocal(); } };
+    this.base.onSnapshot(s => { S.settings = normSettings(s.exists ? s.data() : {}); done("s"); }, fail);
+    this.base.collection("items").onSnapshot(q => { S.items = q.docs.map(d => ({...d.data(), id:d.id})); done("i"); }, fail);
+    this.base.collection("expenses").onSnapshot(q => { S.expenses = q.docs.map(d => ({...d.data(), id:d.id})); done("e"); }, fail);
+  },
+  useLocal(){
+    S.mode = "local";
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(LS_KEY) || "null"); } catch(e){}
+    if (data){ S.items = data.items||[]; S.expenses = data.expenses||[]; S.settings = normSettings(data.settings); }
+    else { const d = demoData(); S.items = d.items; S.expenses = d.expenses; S.settings = d.settings; }
+    S.ready = true; render();
+  },
+  persistLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify({items:S.items, expenses:S.expenses, settings:S.settings})); } catch(e){} },
+  /* Änderungen erscheinen sofort, gespeichert wird im Hintergrund; der nächste Snapshot bestätigt oder korrigiert */
+  async put(coll, obj){
+    const copy = JSON.parse(JSON.stringify(obj)), arr = S[coll], i = arr.findIndex(x => x.id === copy.id);
+    if (i >= 0) arr[i] = copy; else arr.push(copy);
+    render();
+    if (S.mode === "db"){ const clean = {...copy}; delete clean.id; await this.base.collection(coll).doc(copy.id).set(clean); }
+    else this.persistLocal();
+  },
+  async del(coll, id){
+    S[coll] = S[coll].filter(x => x.id !== id); render();
+    if (S.mode === "db") await this.base.collection(coll).doc(id).delete();
+    else this.persistLocal();
+  },
+  async saveSettings(){
+    render();
+    if (S.mode === "db") await this.base.set(JSON.parse(JSON.stringify(S.settings)));
+    else this.persistLocal();
+  }
+};
+async function safe(p, ok){
+  try { await p; if (ok) toast(ok, null, true); }
+  catch(e){
+    const c = e?.code;
+    toast(c==="quota_exceeded" ? "Der Speicher ist voll. Lösch alte Artikel oder große Fotos."
+      : c==="invalid_argument" ? "Du kannst hier nur lesen, nicht speichern."
+      : "Das hat nicht geklappt. Versuch es gleich noch einmal.");
+  }
+}
+
+/* ---------- Beispieldaten ---------- */
+function demoData(){
+  const t = today(), s = DEFAULT_SETTINGS(); s.demo = true;
+  const rows = [
+    ["Levi's 501 Jeans","Levi's","Hosen","W32 L32","Sehr gut","Flohmarkt",6,-120,32,"versendet",-104,34,0],
+    ["Carhartt Detroit Jacke","Carhartt","Jacken","L","Gut","Second-Hand-Laden",28,-95,85,"versendet",-80,89,0],
+    ["Nike Air Max 90","Nike","Schuhe","43","Gut","Kleinanzeigen",22,-88,60,"versendet",-70,58,0],
+    ["Patagonia Better Sweater","Patagonia","Pullover","M","Sehr gut","Flohmarkt",9,-75,55,"versendet",-61,52,0],
+    ["Ralph Lauren Strickpullover","Ralph Lauren","Pullover","L","Sehr gut","Sozialkaufhaus",4,-66,38,"versendet",-50,35,0],
+    ["Dr. Martens 1460","Dr. Martens","Schuhe","40","Gut","Flohmarkt",15,-60,65,"versendet",-41,62,0],
+    ["The North Face Nuptse","The North Face","Jacken","M","Sehr gut","Second-Hand-Laden",45,-52,140,"versendet",-30,135,0],
+    ["Adidas Trainingsjacke 90er","Adidas","Jacken","S","Gut","Flohmarkt",5,-40,30,"versendet",-24,28,0],
+    ["Tommy Hilfiger Hemd","Tommy Hilfiger","Sonstiges","M","Sehr gut","Sozialkaufhaus",3,-36,18,"verkauft",-3,17,0],
+    ["Stüssy Cap","Stüssy","Accessoires","One Size","Neu ohne Etikett","Vinted-Einkauf",12,-30,30,"versendet",-12,28,0],
+    ["Arc'teryx Fleece","Arc'teryx","Pullover","L","Gut","Kleinanzeigen",35,-20,79,"versendet",-6,75,0],
+    ["Lacoste Polo","Lacoste","Sonstiges","4","Sehr gut","Flohmarkt",5,-14,25,"verkauft",-1,24,0],
+    ["Fjällräven Kånken","Fjällräven","Taschen","Classic","Gut","Flohmarkt",12,-110,48,"gelistet",-100,null,0],
+    ["Wrangler Cordhose","Wrangler","Hosen","W30 L32","Gut","Sozialkaufhaus",4,-90,22,"gelistet",-85,null,0],
+    ["New Balance 574","New Balance","Schuhe","42","Sehr gut","Kleinanzeigen",25,-20,55,"gelistet",-18,null,0],
+    ["Barbour Wachsjacke","Barbour","Jacken","L","Gut","Second-Hand-Laden",40,-9,110,"gelistet",-7,null,0],
+    ["Champion Hoodie","Champion","Pullover","XL","Gut","Flohmarkt",6,-5,28,"lager",null,null,0],
+    ["Converse Chuck 70","Converse","Schuhe","41","Neu mit Etikett","Vinted-Einkauf",30,-3,62,"lager",null,null,0],
+    ["Russell Athletic Sweatshirt","Russell Athletic","Pullover","L","Gut",SUPPLIER,7,-48,29,"versendet",-44,27,0,"Vintage Bulk GmbH"],
+    ["Levi's Trucker Jacke","Levi's","Jacken","M","Sehr gut",SUPPLIER,18,-40,59,"gelistet",-36,null,0,"Vintage Bulk GmbH"],
+    ["Carhartt Beanie","Carhartt","Accessoires","One Size","Neu mit Etikett",SUPPLIER,6,-12,22,"lager",null,null,0,"Textil Großhandel Nord"],
+  ];
+  /* Index → Bewertung der abgeschlossenen Bestellungen (null = abgeschlossen ohne Bewertung) */
+  const done = {
+    0:{stars:5, text:"Super schneller Versand, wie beschrieben!", buyer:"lena_vintage"},
+    1:{stars:5, text:"Jacke ist top, sehr sorgfältig verpackt. Gerne wieder!", buyer:"m.krause"},
+    2:{stars:4, text:"Schuhe gut, Sohle etwas mehr abgenutzt als gedacht. Trotzdem fair.", buyer:"sneakerjo"},
+    3:{stars:5, text:"Alles bestens, danke!", buyer:"outdoor_tim"},
+    4:null,
+    5:{stars:5, text:"Schnelle Antwort, schneller Versand, Boots wie neu. Absolut empfehlenswert, ich würde jederzeit wieder bei dir kaufen.", buyer:"anni.b"},
+  };
+  const items = rows.map((r,i) => {
+    const [name,brand,cat,size,cond,src,buy,bd,list,status,ld,sell,ship,supplierName] = r;
+    const it = {id:"demo"+i, code:"A-"+String(i+1).padStart(4,"0"), name, brand, category:cat, size, condition:cond, source:src,
+      buyPrice:buy, buyDate:addDays(t,bd), listPrice:list, status, listedAt: ld!=null ? addDays(t,ld) : "",
+      sellPrice: sell ?? "", sellDate: sell!=null ? addDays(t, ld + Math.min(-ld-1, 6 + i*3)) : "", shipCost:ship,
+      location:"Kiste "+(1+i%4), notes:"", photo:"", createdAt:addDays(t,bd)};
+    if (supplierName) it.supplierName = supplierName;
+    if (status === "versendet") it.shippedAt = minDate(t, addDays(it.sellDate, 1 + i%3));
+    if (i in done){
+      it.status = "abgeschlossen";
+      it.completedAt = minDate(t, addDays(it.shippedAt, 2 + i%3));
+      if (done[i]) it.review = {...done[i], date: it.completedAt};
+    }
+    if (sell!=null){ S.settings = s; it.alloc = allocate(it); }
+    return it;
+  });
+  s.seq = items.length;
+  const expenses = [
+    {id:"dx1", date:addDays(t,-100), category:"Verpackung", amount:18.9, pot:"puffer", note:"Versandtaschen 100 Stk."},
+    {id:"dx2", date:addDays(t,-60), category:"Fahrtkosten", amount:12, pot:"puffer", note:"Flohmarkt Mauerpark"},
+    {id:"dx3", date:addDays(t,-25), category:"Werbung/Push", amount:4.5, pot:"puffer", note:"Vinted Hervorheben"},
+    {id:"dx4", date:addDays(t,-10), category:"Entnahme", amount:60, pot:"privat", note:"Auszahlung"},
+  ];
+  return {items, expenses, settings:s};
+}
+async function loadDemo(){
+  const d = demoData();
+  if (S.mode === "db"){
+    S.settings = d.settings; await safe(store.saveSettings());
+    for (const it of d.items) await safe(store.put("items", it));
+    for (const e of d.expenses) await safe(store.put("expenses", e));
+    toast("Beispieldaten geladen");
+  } else { S.items=d.items; S.expenses=d.expenses; S.settings=d.settings; store.persistLocal(); render(); }
+}
+async function clearAll(){
+  const ids = S.items.map(i=>i.id), eids = S.expenses.map(e=>e.id);
+  const keepSettings = {...S.settings, demo:false};
+  if (S.mode === "db"){
+    for (const id of ids) await safe(store.del("items", id));
+    for (const id of eids) await safe(store.del("expenses", id));
+    S.settings = keepSettings; await safe(store.saveSettings());
+  } else { S.items=[]; S.expenses=[]; S.settings=keepSettings; store.persistLocal(); render(); }
+  toast("Alle Daten gelöscht");
+}
+
+/* ---------- Navigation ---------- */
+const ICONS = {
+  start:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',
+  lager:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+  geld:'<rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/>',
+  vinted:'<path d="M12 3.2l2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6-4.4-4.2 6-.8z"/>',
+  analyse:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  box:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  upload:'<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',
+  flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+  download:'<path d="M12 4v12M7 11l5 5 5-5M4 20h16"/>',
+  camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>'
+};
+const CAT_ICONS = [
+  [/jacke|mantel|coat|jacket/i, '<path d="M8 3l4 3 4-3 4 3-2 4v11H6V10L4 6z"/><path d="M12 6v15"/>'],
+  [/pullover|hoodie|sweat|strick|shirt|hemd|polo|oberteil|top/i, '<path d="M9 3h6l5 4-2 4-2-1v11H8V10l-2 1-2-4z"/>'],
+  [/hose|jeans|pants|rock/i, '<path d="M7 3h10l1 18h-4l-2-11-2 11H6z"/>'],
+  [/schuh|sneaker|stiefel|boot/i, '<path d="M3 15.5h18v3H3z"/><path d="M3 15.5V8h5l3 3.5 6 1c2 .4 4 1.4 4 3"/>'],
+  [/tasche|bag|rucksack/i, '<path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'],
+  [/accessoire|cap|mütze|schal|gürtel|schmuck/i, '<path d="M4 15a8 8 0 0 1 16 0z"/><path d="M12 15h9"/>'],
+];
+const TAG_ICON = '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8" r="1.5"/>';
+function thumbHTML(i, cls = "thumb"){
+  if (i.photo) return `<img class="${cls}" src="${i.photo}" alt="">`;
+  const src = (i.brand || i.name || "?").trim(), parts = src.split(/[\s'’.-]+/).filter(Boolean);
+  const ini = (parts.length > 1 ? parts[0][0] + parts[1][0] : src.slice(0, 2)).toUpperCase();
+  return `<span class="${cls}" aria-hidden="true">${esc(ini)}</span>`;
+}
+const icon = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">${ICONS[k]}</svg>`;
+const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+const TABS = [["start","Übersicht"],["lager","Lager"],["geld","Geld"],["vinted","Mein Vinted"],["analyse","Auswertung"]];
+function renderTabs(){
+  $("#tabs").innerHTML = TABS.map(([k,l]) => `<button class="tab" data-tab="${k}" aria-current="${S.tab===k}">${icon(k)}${l}</button>`).join("");
+}
+
+/* ---------- Bausteine: Aufklappen, Info, Sterne, Schritte ---------- */
+function isOpen(id, def){ try { const v = localStorage.getItem("fk-open-"+id); if (v !== null) return v === "1"; } catch(e){} return !!def; }
+function fold(id, title, body, {info="", open=false, persist=true, cls=""} = {}){
+  const o = persist ? isOpen(id, open) : open;
+  return `<details class="fold ${cls}" id="fold-${id}" ${persist?`data-fold="${id}"`:""} ${o?"open":""}><summary><span class="fold-t">${title}</span>${info?`<span class="fold-i">${info}</span>`:""}${CHEV}</summary><div class="fold-b">${body}</div></details>`;
+}
+const tip = text => `<details class="tip"><summary aria-label="Erklärung">i</summary><div class="tip-b">${text}</div></details>`;
+const POT_TONES = [100, 72, 48, 28];
+const potColor = i => `var(--pot-${i % 4 + 1})`;
+
+const STAR_PATH = '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>';
+function starsHTML(v, size = 14){
+  const pct = Math.max(0, Math.min(100, v / 5 * 100));
+  const row = c => Array.from({length:5}, () => `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="${c}" aria-hidden="true">${STAR_PATH}</svg>`).join("");
+  return `<span class="stars" role="img" aria-label="${fmt1(v)} von 5 Sternen"><span class="stars-row">${row("var(--line)")}</span><span class="stars-row stars-fg" style="width:${pct}%">${row("var(--tag)")}</span></span>`;
+}
+function starPicker(val, act){
+  return `<div class="star-pick" role="radiogroup" aria-label="Sterne">${[1,2,3,4,5].map(k => `<button type="button" class="star-btn ${k<=val?"on":""}" data-act="${act}" data-v="${k}" role="radio" aria-checked="${k===val}" aria-label="${k} ${k===1?"Stern":"Sterne"}"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">${STAR_PATH}</svg></button>`).join("")}</div>`;
+}
+function stepBar(it){
+  const idx = Math.max(0, STEPS.indexOf(it.status));
+  let s = `<span class="steps" role="img" aria-label="Schritt ${idx+1} von 5: ${STATUS[it.status]||""}">`;
+  STEPS.forEach((st,k) => {
+    if (k) s += `<span class="ln ${k<=idx?"done":""}"></span>`;
+    s += `<span class="dot ${k<idx?"done":k===idx?"cur":""}" title="${STATUS[st]}"></span>`;
+  });
+  return s + `</span>`;
+}
+function nextStep(it){
+  switch (it.status){
+    case "lager": return `<button class="btn sm step-btn" data-act="step" data-id="${it.id}">Online stellen</button>`;
+    case "gelistet": return `<button class="btn sm step-btn" data-act="step" data-id="${it.id}">Verkauft</button>`;
+    case "verkauft": return `<button class="btn primary sm step-btn" data-act="step" data-id="${it.id}">Versendet</button>`;
+    case "versendet": return `<button class="btn sm step-btn" data-act="step" data-id="${it.id}">Abschließen</button>`;
+    case "abgeschlossen": return it.review ? starsHTML(it.review.stars, 14) : `<button class="btn ghost sm step-btn" data-act="step" data-id="${it.id}">Bewertung eintragen</button>`;
+  }
+  return "";
+}
+
+/* ---------- Ansichten ---------- */
+const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const LOGO = '<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-12 16 16)"><path d="M5 10.5A3.5 3.5 0 0 1 8.5 7H21l7 9-7 9H8.5A3.5 3.5 0 0 1 5 21.5z" fill="var(--tag)"/><circle cx="21.2" cy="16" r="2.1" fill="var(--bg)"/><path d="M9.5 13h6M9.5 16h4.5M9.5 19h3" stroke="var(--tag-ink)" stroke-width="1.8" stroke-linecap="round"/></g></svg>';
+const FMT = {money, money0, one: fmt1, int: v => String(Math.round(v))};
+const countMem = {};
+let lastView = "", enterT;
+function countUp(){
+  document.querySelectorAll("[data-count]").forEach(el => {
+    const key = el.dataset.ck, to = +el.dataset.count, f = FMT[el.dataset.fmt] || money;
+    const from = countMem[key]; countMem[key] = to;
+    if (from == null || from === to || RM()) return;
+    const t0 = performance.now(), dur = 650;
+    cancelAnimationFrame(el._raf);
+    const tick = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = f(from + (to - from) * e); if (k < 1) el._raf = requestAnimationFrame(tick); };
+    el._raf = requestAnimationFrame(tick);
+  });
+}
+function renderDemo(){
+  const slot = $("#demo-slot"), on = !!S.settings.demo;
+  if (!!slot.firstChild === on) return;
+  slot.innerHTML = on ? `<details class="pop" id="demo-pop"><summary class="demo-pill">Beispieldaten</summary><div class="pop-b"><span>Du siehst Beispieldaten, damit du alles ausprobieren kannst. Lösch sie, bevor du deine eigenen Artikel einträgst.</span><button class="btn danger sm" data-act="clear-demo">Beispieldaten löschen</button></div></details>` : "";
+}
+function render(){
+  renderTabs();
+  const sy = $("#sync");
+  const label = S.mode==="db" ? "Gespeichert in deinem Konto" : S.mode==="local" ? "Nur in diesem Browser gespeichert" : "Lädt …";
+  sy.className = "sync" + (S.mode==="db" ? " on" : ""); sy.title = label; sy.setAttribute("aria-label", label);
+  if (!S.ready) return;
+  renderDemo();
+  $("#fab").hidden = S.tab === "setup";
+  const app = $("#app");
+  const isEmpty = !S.items.length && !S.expenses.length;
+  const view = isEmpty && (S.tab==="start" || S.tab==="lager") ? "empty" : S.tab + (S.tab==="analyse" ? ":" + S.anaSeg : "");
+  const html = view === "empty" ? viewEmpty() : ({start:viewStart, lager:viewLager, geld:viewGeld, vinted:viewVinted, analyse:viewAnalyse, setup:viewSetup}[S.tab] || viewStart)();
+  const fresh = view !== lastView; lastView = view;
+  if (fresh || !window.morphdom){
+    app.innerHTML = html;
+    if (fresh && !RM()){ app.classList.remove("enter"); void app.offsetWidth; app.classList.add("enter"); clearTimeout(enterT); enterT = setTimeout(() => app.classList.remove("enter"), 700); }
+  } else {
+    const next = document.createElement("main"); next.innerHTML = html;
+    morphdom(app, next, {childrenOnly:true,
+      onBeforeElUpdated(from, to){
+        if (from === document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(from.tagName)) return false;
+        if (from.tagName === "DETAILS"){ if (from.open) to.setAttribute("open",""); else to.removeAttribute("open"); }
+        if (from.dataset?.leaving) return false;
+        return !from.isEqualNode(to);
+      },
+      onBeforeNodeDiscarded(node){
+        if (node.nodeType !== 1 || !node.classList.contains("item") || RM()) return true;
+        if (node.dataset.leaving) return false;
+        node.dataset.leaving = "1"; node.removeAttribute("id"); node.style.pointerEvents = "none";
+        const h = node.offsetHeight;
+        node.animate([{opacity:1, height:h+"px", transform:"none"}, {opacity:0, height:"0px", paddingTop:"0px", paddingBottom:"0px", marginBottom:"-12px", transform:"scale(.97)"}],
+          {duration:280, easing:"cubic-bezier(.2,.8,.2,1)"}).onfinish = () => node.remove();
+        return false;
+      },
+      onNodeAdded(node){
+        if (node.nodeType === 1 && (node.classList.contains("item") || node.classList.contains("rev-card"))){ node.classList.add("added"); setTimeout(() => node.classList.remove("added"), 450); }
+        return node;
+      }
+    });
+  }
+  countUp();
+  updateCalc();
+}
+
+function viewEmpty(){
+  return `<div class="panel empty"><span class="empty-ic">${LOGO}</span><h2>Dein Lager ist noch leer</h2>
+  <p class="muted" style="max-width:46ch">Leg deinen ersten Artikel an. Sobald du verkaufst, verteilt Flipkontor den Erlös auf deine Geldtöpfe.</p>
+  <div class="row" style="justify-content:center"><button class="btn primary" data-act="new-item">Ersten Artikel anlegen</button><button class="btn" data-act="load-demo">Mit Beispieldaten ausprobieren</button></div></div>`;
+}
+
+function kpi(l,v,s,cls=""){ return `<div class="kpi"><span class="kpi-l">${l}</span><span class="kpi-v ${cls}">${v}</span>${s?`<span class="kpi-s">${s}</span>`:""}</div>`; }
+
+function viewStart(){
+  const mk = monthKey(today());
+  const m = periodStats(d => monthKey(d)===mk);
+  const stock = S.items.filter(i => !SOLD(i.status));
+  const stockVal = stock.reduce((a,i)=>a+n(i.buyPrice),0);
+  const stockList = stock.reduce((a,i)=>a+n(i.listPrice),0);
+  const g = S.settings.goals;
+  const monthName = new Date().toLocaleDateString("de-DE",{month:"long"});
+  const goalPct = g.profit ? Math.max(0, Math.round(m.net / g.profit * 100)) : 0;
+
+  const toShip = S.items.filter(i => i.status==="verkauft").length;
+  const stale = stock.filter(isStale).length;
+  const offline = S.items.filter(i => i.status==="lager").length;
+  const toClose = S.items.filter(i => i.status==="versendet" && daysBetween(i.shippedAt || i.sellDate || today()) >= 3).length;
+  const cards = [];
+  if (toShip) cards.push(`<button class="todo-card" data-act="goto" data-to="lager" data-filter-to="verkauft">${icon("box")}<span><span class="todo-n">${toShip}</span><br><span class="todo-t">${toShip===1?"Paket":"Pakete"} versenden</span></span></button>`);
+  if (toClose) cards.push(`<button class="todo-card" data-act="goto" data-to="lager" data-filter-to="versendet">${icon("flag")}<span><span class="todo-n">${toClose}</span><br><span class="todo-t">${toClose===1?"Bestellung":"Bestellungen"} abschließen</span></span></button>`);
+  if (stale) cards.push(`<button class="todo-card" data-act="goto" data-to="analyse" data-seg-to="sales" data-scroll="stale">${icon("clock")}<span><span class="todo-n">${stale}</span><br><span class="todo-t">Ladenhüter günstiger machen</span></span></button>`);
+  if (offline) cards.push(`<button class="todo-card" data-act="goto" data-to="lager" data-filter-to="lager">${icon("upload")}<span><span class="todo-n">${offline}</span><br><span class="todo-t">Artikel noch nicht online</span></span></button>`);
+  if (!cards.length) cards.push(`<div class="todo-card done">${icon("check")}<span><span class="todo-n" style="font-size:1.1rem">Alles erledigt</span><br><span class="todo-t">Nichts zu versenden, nichts liegt zu lange.</span></span></div>`);
+
+  const more = `<div class="kpis">
+      ${kpi("Umsatz", money(m.revenue), `${m.count} Verkäufe`, "money")}
+      ${kpi("Gewinn", money(m.net), `nach ${money0(m.exp)} Ausgaben`, "money")}
+      ${kpi("Marge", Math.round(m.margin*100)+" %", "Gewinn je Euro Umsatz")}
+      ${kpi("Lagerwert", money0(stockVal), `${stock.length} Artikel · ${money0(stockList)} gelistet`, "money")}
+    </div>
+    <div><div class="panel-head" style="margin-bottom:8px"><h3>Letzte 6 Monate</h3><div class="legend"><span><i style="background:var(--accent-soft)"></i>Umsatz</span><span><i style="background:var(--accent)"></i>Gewinn</span></div></div>${chart6()}</div>
+    <div class="stack"><h3>Monatsziele</h3>${[["Gewinn", m.net, g.profit, money0],["Umsatz", m.revenue, g.revenue, money0],["Verkäufe", m.count, g.sold, v=>Math.round(v)]].map(([l,v,t,f]) => { const p = t ? Math.min(100, v/t*100) : 0; return `<div class="stack" style="gap:6px"><div class="row" style="justify-content:space-between"><span>${l}</span><span class="num">${f(v)} <span class="muted">/ ${f(t)}</span></span></div><div class="bar ${p>=100?"good":""}"><span style="width:${Math.max(0,p)}%"></span></div></div>`; }).join("")}</div>`;
+
+  return `
+  <section class="hero">
+    <span class="hero-l">Gewinn im ${monthName}</span>
+    <span class="hero-v ${m.net<0?"neg":""}" data-count="${m.net}" data-ck="hero" data-fmt="money">${money(m.net)}</span>
+    <span class="hero-s num">${m.count} Verkäufe · ${money0(m.revenue)} Umsatz</span>
+    ${g.profit ? `<div class="hero-goal"><div class="bar ${goalPct>=100?"good":""}"><span style="width:${Math.min(100,goalPct)}%"></span></div><span class="muted small num">${goalPct} % vom Ziel (${money0(g.profit)})</span></div>` : ""}
+  </section>
+  <section class="stack"><h3>Zu tun</h3><div class="todo">${cards.join("")}</div></section>
+  ${potsSummary()}
+  ${fold("mehr-zahlen", "Mehr Zahlen", more)}`;
+}
+
+function potsSummary(){
+  const b = potBalances(), pots = S.settings.pots;
+  const total = pots.reduce((a,p)=>a+Math.max(0,b[p.id]),0);
+  return `<section class="panel"><div class="panel-head"><h3>Deine Töpfe</h3><button class="btn ghost sm" data-tab="geld">Details</button></div>
+    ${total>0 ? `<div class="stackbar" role="img" aria-label="Verteilung auf die Töpfe">${pots.map((p,i)=> b[p.id]>0 ? `<span style="width:${b[p.id]/total*100}%;background:${potColor(i)}" title="${esc(p.name)}: ${money(b[p.id])}"></span>` : "").join("")}</div>` : ""}
+    <div class="legend2">${pots.map((p,i)=>`<div><i style="background:${potColor(i)}"></i><span class="nm">${esc(p.name)}</span><span class="money ${b[p.id]<0?"neg":""}" style="margin-left:auto">${money0(b[p.id])}</span></div>`).join("")}</div>
+  </section>`;
+}
+
+function staleRow(i){
+  const d = daysBetween(i.listedAt||i.buyDate), lp = n(i.listPrice), sug = Math.max(n(i.buyPrice)+1, Math.round(lp*(d>S.settings.staleDays*2?0.75:0.85)));
+  return `<li><span class="grow"><span><span class="code">${esc(i.code)}</span> ${esc(i.name)}</span><span class="muted small">${d} Tage · <span class="money">${money0(lp)}</span> → <b class="money">${money0(sug)}</b></span></span><button class="btn sm" data-act="reprice" data-id="${i.id}" data-price="${sug}">Preis senken</button></li>`;
+}
+
+function chart6(){
+  const now = new Date(), months = [];
+  for (let k=5;k>=0;k--){ const d = new Date(now.getFullYear(), now.getMonth()-k, 1); months.push({key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`, label:MONTHS[d.getMonth()]}); }
+  months.forEach(m => Object.assign(m, periodStats(d => monthKey(d)===m.key)));
+  const max = Math.max(50, ...months.map(m => m.revenue), ...months.map(m=>m.net));
+  const step = max > 1000 ? 500 : max > 400 ? 200 : max > 150 ? 50 : 25;
+  const top = Math.ceil(max/step)*step;
+  const W=520,H=200,L=40,R=8,T=10,B=26, ih=H-T-B, iw=W-L-R, bw=iw/6;
+  const y = v => T + ih - (Math.max(0,v)/top)*ih;
+  const bar = (x, w, v) => { const y0 = y(v), h = T + ih - y0; if (h <= 0) return "M0 0"; const r = Math.min(6, w/2, h);
+    return `M${x},${y0+h}V${y0+r}Q${x},${y0} ${x+r},${y0}H${x+w-r}Q${x+w},${y0} ${x+w},${y0+r}V${y0+h}Z`; };
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Umsatz und Gewinn der letzten sechs Monate">`;
+  for (let v=0; v<=top; v+=step) s += `<line class="gl" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  months.forEach((m,i) => {
+    const x = L + i*bw + bw*0.18, w = bw*0.64;
+    s += `<g class="m ${i===5?"cur":""}"><path class="rev" d="${bar(x, w, m.revenue)}"><title>${m.label}: Umsatz ${money(m.revenue)}</title></path>`;
+    s += `<path class="${m.net<0?"loss":"pro"}" d="${bar(x+w*0.22, w*0.56, m.net)}"><title>${m.label}: Gewinn ${money(m.net)}</title></path>`;
+    s += `<text x="${x+w/2}" y="${H-8}" text-anchor="middle">${m.label}</text></g>`;
+  });
+  return s + `</svg>`;
+}
+
+const MAIN_FILTERS = [["aktiv","Bestand"],["verkauft","Zu versenden"],["versendet","Unterwegs"],["abgeschlossen","Abgeschlossen"]];
+const MORE_FILTERS = [["lager","Im Lager"],["gelistet","Online"],["alle","Alle"]];
+function matchFilter(i, f){ return f==="alle" || (f==="aktiv" ? (i.status==="lager" || i.status==="gelistet") : i.status===f); }
+function viewLager(){
+  const f = S.filter, q = f.q.trim().toLowerCase();
+  let list = S.items.filter(i => matchFilter(i, f.status));
+  if (q) list = list.filter(i => [i.name,i.brand,i.code,i.category,i.size,i.location,i.source,i.supplierName].join(" ").toLowerCase().includes(q));
+  list.sort((a,b) => (b.completedAt||b.shippedAt||b.sellDate||b.listedAt||b.buyDate||"").localeCompare(a.completedAt||a.shippedAt||a.sellDate||a.listedAt||a.buyDate||""));
+  const moreOn = MORE_FILTERS.some(([k]) => k===f.status);
+  return `<div class="page-head"><h2>Lager</h2><span class="muted small num">${list.length} Artikel</span></div>
+  <div class="stack">
+    <label class="searchbox">${icon("search")}<input id="q" type="search" placeholder="Suchen nach Marke, Nummer, Ort …" value="${esc(f.q)}" aria-label="Lager durchsuchen"></label>
+    <div class="filters"><div class="seg seg-scroll">${MAIN_FILTERS.map(([k,l]) => `<button data-filter="${k}" aria-pressed="${f.status===k}">${l}</button>`).join("")}</div>
+      <select id="filter-more" class="more-filter ${moreOn?"on":""}" aria-label="Weitere Filter"><option value="" ${moreOn?"":"selected"}>Mehr</option>${MORE_FILTERS.map(([k,l])=>`<option value="${k}" ${f.status===k?"selected":""}>${l}</option>`).join("")}</select></div>
+  </div>
+  <div class="items" id="items">${list.length ? list.map(itemRow).join("") : `<div class="panel empty" style="padding:32px 16px"><span class="empty-ic">${icon("search")}</span><p class="muted">Keine Artikel in dieser Ansicht</p><button class="btn" data-act="reset-filter">Filter zurücksetzen</button></div>`}</div>`;
+}
+function itemRow(i){
+  const sold = SOLD(i.status), p = itemProfit(i), stale = isStale(i);
+  const days = daysBetween(i.listedAt||i.buyDate);
+  const extra = stale ? `<span class="chip stale">${days} Tage</span>` : i.status==="verkauft" ? `<span class="chip st-verkauft">Verkauft</span>` : i.size ? `<span>${esc(i.size)}</span>` : "";
+  return `<div class="item" id="item-${i.id}">
+    <button class="item-top" data-act="edit" data-id="${i.id}">
+      ${thumbHTML(i)}
+      <span class="item-main"><span class="item-title">${esc(i.name)}</span><span class="item-meta"><span class="code">${esc(i.code)}</span>${extra}</span></span>
+      <span class="item-price">${sold ? `<b>${money(i.sellPrice)}</b><span class="money ${p>=0?"pos":"neg"}">${p>=0?"+":"−"}${money(Math.abs(p))}</span>` : `<b>${money(i.listPrice)}</b><span>EK <span class="money">${money(i.buyPrice)}</span></span>`}</span>
+    </button>
+    <div class="item-steps"><div class="step-info">${stepBar(i)}<span class="chip st-${i.status}">${STATUS[i.status]||""}</span></div>${nextStep(i)}</div>
+  </div>`;
+}
+
+function viewGeld(){
+  const b = potBalances();
+  const exp = [...S.expenses].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const potName = id => S.settings.pots.find(p=>p.id===resolvePot(id))?.name || "–";
+  const recent = soldItems().sort((a,b)=>b.sellDate.localeCompare(a.sellDate)).slice(0,8);
+  const calc = `<div class="form">
+      <div class="fld"><label for="c-buy">Einkaufspreis (€)</label><input id="c-buy" inputmode="decimal" value="8"></div>
+      <div class="fld"><label for="c-sell">Verkaufspreis (€)</label><input id="c-sell" inputmode="decimal" value="35"></div>
+      <div class="fld"><label for="c-ship">Versand, den du zahlst (€)</label><input id="c-ship" inputmode="decimal" value="0"></div>
+      <div class="fld"><label for="c-extra">Sonstiges, z. B. Push oder Tüte (€)</label><input id="c-extra" inputmode="decimal" value="0.5"></div>
+    </div><div class="calc" id="calc-out"></div>`;
+  const dist = `<div class="tablewrap"><table><thead><tr><th>Artikel</th>${S.settings.pots.map(p=>`<th class="r">${esc(p.name.split(" ")[0])}</th>`).join("")}</tr></thead><tbody>
+      ${recent.map(i => { const a = i.alloc || allocate(i); const r = {}; for (const k in a){ const t = resolvePot(k); r[t] = (r[t]||0) + a[k]; } return `<tr><td><span class="code">${esc(i.code)}</span></td>${S.settings.pots.map(p=>`<td class="r money">${money(r[p.id]||0)}</td>`).join("")}</tr>`; }).join("")}</tbody></table></div>`;
+  const book = `<div class="tablewrap"><table><thead><tr><th>Datum</th><th>Kategorie</th><th>Notiz</th><th>Topf</th><th class="r">Betrag</th><th></th></tr></thead><tbody>
+      ${exp.map(e => `<tr><td class="num">${fmtDate(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.note)}</td><td>${esc(potName(e.pot))}</td><td class="r money">${money(e.amount)}</td><td class="r"><button class="btn ghost sm" data-act="edit-exp" data-id="${e.id}">Bearbeiten</button></td></tr>`).join("")}</tbody></table></div>`;
+  return `<div class="page-head"><h2>Geld</h2>${tip(hasPot("reinvest") ? "Beim Verkauf fließt der Einkaufspreis zurück in „Wiedereinkauf“. Der Gewinn wird nach deinen Prozenten auf die Töpfe verteilt. Einkäufe zahlst du aus „Wiedereinkauf“, Ausgaben aus dem Topf, den du wählst." : "Der Gewinn wird nach deinen Prozenten auf die Töpfe verteilt. Ausgaben zahlst du aus dem Topf, den du wählst.")}</div>
+  <div class="pots">${S.settings.pots.map((p,i) => `<div class="pot" style="--stripe:${potColor(i)}"><span class="muted small">${esc(p.name)} · ${p.pct} %</span><span class="pot-v ${b[p.id]<0?"neg":""}" data-count="${b[p.id]}" data-ck="pot-${p.id}" data-fmt="money">${money(b[p.id])}</span></div>`).join("")}</div>
+  <div class="bigbtns"><button class="btn primary" data-act="new-exp">+ Ausgabe</button><button class="btn" data-act="new-withdraw">Geld entnehmen</button></div>
+  <div class="stack">
+    ${fold("rechner", "Gewinnrechner", calc, {info:"Was bleibt?"})}
+    ${recent.length ? fold("verteilungen", "Letzte Verteilungen", dist, {info:`${recent.length} Verkäufe`}) : ""}
+    ${exp.length ? fold("ausgabenbuch", "Ausgabenbuch", book, {info:`${exp.length} Einträge`}) : ""}
+  </div>`;
+}
+function updateCalc(){
+  const out = $("#calc-out"); if (!out) return;
+  const buy=n($("#c-buy").value), sell=n($("#c-sell").value), ship=n($("#c-ship").value), extra=n($("#c-extra").value);
+  const fee = sell*S.settings.feePct/100 + n(S.settings.feeFix);
+  const profit = sell - fee - ship - extra - buy;
+  const mult = buy ? (sell/buy).toFixed(1).replace(".",",") : "–";
+  const steuer = S.settings.pots.find(p=>p.id==="steuer");
+  out.innerHTML = `<div><span>Verkauf</span><span class="money">${money(sell)}</span></div>
+    <div><span>Vinted-Gebühr (${S.settings.feePct} % + ${money(S.settings.feeFix)})</span><span class="money">−${money(fee)}</span></div>
+    <div><span>Versand + Sonstiges</span><span class="money">−${money(ship+extra)}</span></div>
+    <div><span>Einkauf</span><span class="money">−${money(buy)}</span></div>
+    <div class="tot"><span>Gewinn · Faktor ${mult}×</span><span class="money ${profit>=0?"pos":"neg"}">${money(profit)}</span></div>
+    ${steuer ? `<div class="muted small"><span>Davon in die Steuerrücklage</span><span class="money">${money(Math.max(0,profit)*steuer.pct/100)}</span></div>` : ""}`;
+}
+
+/* ---------- Mein Vinted ---------- */
+function viewVinted(){
+  const sold = soldItems();
+  const reviews = S.items.filter(i => i.review && i.review.stars).sort((a,b)=>(b.review.date||b.completedAt||"").localeCompare(a.review.date||a.completedAt||""));
+  const count = reviews.length, avg = count ? reviews.reduce((a,i)=>a+i.review.stars,0)/count : 0;
+  const closed = S.items.filter(i => i.status==="abgeschlossen");
+  const shipT = S.items.filter(i => i.sellDate && i.shippedAt).map(i => Math.max(0, daysBetween(i.sellDate, i.shippedAt)));
+  const doneT = S.items.filter(i => i.shippedAt && i.completedAt).map(i => Math.max(0, daysBetween(i.shippedAt, i.completedAt)));
+  const avgOf = a => a.length ? fmt1(a.reduce((x,y)=>x+y,0)/a.length) + " Tage" : "–";
+  const dist = [5,4,3,2,1].map(k => [k, reviews.filter(i=>i.review.stars===k).length]);
+  const maxD = Math.max(1, ...dist.map(d=>d[1]));
+  const open = closed.filter(i => !i.review || !i.review.stars).sort((a,b)=>(b.completedAt||"").localeCompare(a.completedAt||""));
+  const openRow = i => `<li><span class="row" style="gap:12px;min-width:0;flex-wrap:nowrap">${thumbHTML(i, "thumb sm")}<span class="grow"><span class="item-title" style="font-size:15px">${esc(i.name)}</span><span class="muted small">abgeschlossen ${fmtDate(i.completedAt)}</span></span></span><button class="btn sm" data-act="review" data-id="${i.id}">Bewertung eintragen</button></li>`;
+  const revCard = i => { const r = i.review, long = (r.text||"").length > 140;
+    return `<div class="rev-card" id="rev-${i.id}" data-act="edit" data-id="${i.id}" role="button" tabindex="0">
+      <div class="row" style="justify-content:space-between">${starsHTML(r.stars, 16)}<span class="muted small num">${fmtDate(r.date||i.completedAt)}</span></div>
+      ${r.text ? `<p class="rev-text ${long?"clamp":""}">${esc(r.text)}</p>${long?`<button type="button" class="btn ghost sm rev-more" data-act="more-text">mehr</button>`:""}` : ""}
+      <span class="muted small">${r.buyer ? esc(r.buyer)+" · " : ""}${esc(i.name)}</span></div>`; };
+  const orders = [...sold].sort((a,b)=>(b.sellDate||"").localeCompare(a.sellDate||""));
+
+  return `<section class="hero">
+    <span class="hero-l">Deine Bewertung</span>
+    ${count ? `<div class="row" style="gap:16px;align-items:center"><span class="rating-v" data-count="${avg}" data-ck="rating" data-fmt="one">${fmt1(avg)}</span>${starsHTML(avg, 24)}</div><span class="hero-s num">${count} ${count===1?"Bewertung":"Bewertungen"}</span>`
+      : `<span class="rating-v muted" style="font-size:1.5rem">Noch keine Bewertungen eingetragen</span><span class="hero-s">Trag Bewertungen beim Abschließen einer Bestellung ein.</span>`}
+  </section>
+  <div class="tiles">
+    <div class="tile"><span class="kpi-l">Abgeschlossen</span><span class="kpi-v num">${closed.length}</span></div>
+    <div class="tile"><span class="kpi-l">Ø Versandzeit</span><span class="kpi-v num">${avgOf(shipT)}</span></div>
+    <div class="tile"><span class="kpi-l">Ø bis Abschluss</span><span class="kpi-v num">${avgOf(doneT)}</span></div>
+  </div>
+  ${count ? `<section class="panel"><div class="panel-head"><h3>Sternverteilung</h3></div><div class="dist">${dist.map(([k,c]) => `<div class="dist-row"><span class="num">${k}★</span><div class="bar tagbar"><span style="width:${c/maxD*100}%"></span></div><span class="num muted">${c}</span></div>`).join("")}</div></section>` : ""}
+  ${open.length ? `<section class="panel"><div class="panel-head"><h3>Offene Bewertungen</h3><span class="muted small num">${open.length}</span></div>
+    <ul class="list">${open.slice(0,3).map(openRow).join("")}</ul>
+    ${open.length>3 ? fold("offene-bew", `Alle ${open.length} anzeigen`, `<ul class="list">${open.slice(3).map(openRow).join("")}</ul>`, {cls:"inner"}) : ""}</section>` : ""}
+  ${count ? `<section class="stack"><h3>Letzte Bewertungen</h3><div class="rev-list">${reviews.slice(0,10).map(revCard).join("")}</div></section>` : ""}
+  ${orders.length ? fold("alle-bestellungen", "Alle Bestellungen", `<div class="items">${orders.map(itemRow).join("")}</div>`, {info:`${orders.length}`}) : ""}`;
+}
+
+/* ---------- Auswertung (Verkäufe | Steuer) ---------- */
+function viewAnalyse(){
+  return `<div class="page-head"><h2>Auswertung</h2><div class="seg" role="tablist"><button data-seg="sales" aria-pressed="${S.anaSeg!=="steuer"}">Verkäufe</button><button data-seg="steuer" aria-pressed="${S.anaSeg==="steuer"}">Steuer</button></div></div>
+  ${S.anaSeg === "steuer" ? viewSteuer() : viewSales()}`;
+}
+function srcStats(list){
+  const r = {n:0, sold:0, buy:0, profit:0, days:0, rev:0, soldBuy:0};
+  list.forEach(i => { r.n++; r.buy += n(i.buyPrice);
+    if (SOLD(i.status) && i.sellDate){ r.sold++; r.profit += itemProfit(i); r.rev += n(i.sellPrice); r.soldBuy += n(i.buyPrice); r.days += Math.max(0,daysBetween(i.buyDate, i.sellDate)); } });
+  return r;
+}
+function viewSales(){
+  const groups = {};
+  S.items.forEach(i => { (groups[i.source || "Ohne Quelle"] ||= []).push(i); });
+  const rows = Object.entries(groups).map(([k,list]) => [k, srcStats(list)]).sort((a,b)=>b[1].profit-a[1].profit);
+  const soldRows = rows.filter(([,r])=>r.sold);
+  const best = soldRows[0];
+  const cats = {};
+  soldItems().forEach(i => { const c = cats[i.category||"Sonstiges"] ||= {n:0,p:0,d:0}; c.n++; c.p+=itemProfit(i); c.d+=Math.max(0,daysBetween(i.buyDate,i.sellDate)); });
+  const catRows = Object.entries(cats).sort((a,b)=>b[1].p-a[1].p);
+  const stale = S.items.filter(isStale).sort((a,b)=>daysBetween(b.listedAt||b.buyDate)-daysBetween(a.listedAt||a.buyDate));
+  const maxP = Math.max(1,...rows.map(([,r])=>r.profit));
+  const maxC = Math.max(1,...catRows.map(([,c])=>c.p));
+  const rank = (list, maxV, sub) => `<div class="rank">${list.map(([k,r],i)=>`<div class="rank-row"><span class="pl">${i+1}</span><span>${esc(k)}${sub?` <span class="muted small">${sub(r)}</span>`:""}</span><span class="money">${money0(r.profit ?? r.p)}</span><div class="bar"><span style="width:${Math.max(0,(r.profit ?? r.p)/maxV*100)}%"></span></div></div>`).join("")}</div>`;
+  const srcRow = (k, r, sub) => `<tr class="${sub?"subrow":""}"><td>${esc(k)}</td><td class="r num">${r.n}</td><td class="r num">${r.sold}</td><td class="r money">${r.sold?money(r.profit/r.sold):"–"}</td><td class="r num">${r.sold?Math.round(r.profit/Math.max(0.01,r.soldBuy)*100)+" %":"–"}</td><td class="r num">${r.sold?Math.round(r.days/r.sold):"–"}</td><td class="r money">${money0(r.profit)}</td></tr>`;
+  const supplierRows = () => {
+    const by = {}; (groups[SUPPLIER]||[]).forEach(i => { (by[(i.supplierName||"").trim() || "Ohne Name"] ||= []).push(i); });
+    return Object.entries(by).map(([k,l]) => [k, srcStats(l)]).sort((a,b)=>b[1].profit-a[1].profit).map(([k,r]) => srcRow(k, r, true)).join("");
+  };
+  const srcTable = `<div class="tablewrap"><table><thead><tr><th>Quelle</th><th class="r">Artikel</th><th class="r">Verkauft</th><th class="r">Ø Gewinn</th><th class="r">ROI</th><th class="r">Ø Tage</th><th class="r">Gewinn</th></tr></thead><tbody>
+    ${rows.map(([k,r]) => srcRow(k, r, false) + (k===SUPPLIER ? supplierRows() : "")).join("")}
+    </tbody></table></div>`;
+  const catRest = catRows.slice(3);
+
+  return `<p class="lead">${best ? `Am meisten bringt dir <b>${esc(best[0])}</b>: Ø <span class="money">${money(best[1].profit/best[1].sold)}</span> Gewinn pro Artikel.` : "Sobald du verkaufst, siehst du hier, welche Einkaufsquelle sich lohnt."}</p>
+  ${soldRows.length ? `<section class="panel"><div class="panel-head"><h3>Beste Quellen</h3>${tip("ROI = Gewinn geteilt durch den Einkaufspreis der verkauften Artikel. 300 % heißt: aus 10 € Einkauf wurden 30 € Gewinn.")}</div>
+    ${rank(soldRows.slice(0,3), maxP, r => `${r.sold} verkauft`)}
+    ${fold("alle-quellen", "Alle Quellen anzeigen", srcTable, {cls:"inner"})}</section>` : ""}
+  ${catRows.length ? `<section class="panel"><div class="panel-head"><h3>Beste Kategorien</h3></div>
+    ${rank(catRows.slice(0,3), maxC, c => `${c.n} verkauft · Ø ${Math.round(c.d/c.n)} Tage`)}
+    ${catRest.length ? fold("alle-kategorien", `Weitere ${catRest.length} anzeigen`, `<div class="tablewrap"><table><thead><tr><th>Kategorie</th><th class="r">Verkauft</th><th class="r">Ø Gewinn</th><th class="r">Ø Tage</th></tr></thead><tbody>${catRest.map(([k,c])=>`<tr><td>${esc(k)}</td><td class="r num">${c.n}</td><td class="r money">${money(c.p/c.n)}</td><td class="r num">${Math.round(c.d/c.n)}</td></tr>`).join("")}</tbody></table></div>`, {cls:"inner"}) : ""}</section>` : ""}
+  ${stale.length ? `<section class="panel" id="stale"><div class="panel-head"><h3>Ladenhüter</h3>${tip(`Länger als ${S.settings.staleDays} Tage im Bestand. Vorschlag: −15 % ab ${S.settings.staleDays} Tagen, −25 % ab ${S.settings.staleDays*2} Tagen, nie unter Einkaufspreis.`)}</div>
+    <ul class="list">${stale.slice(0,5).map(staleRow).join("")}</ul>
+    ${stale.length>5 ? fold("alle-ladenhueter", `Alle ${stale.length} anzeigen`, `<ul class="list">${stale.slice(5).map(staleRow).join("")}</ul>`, {cls:"inner"}) : ""}</section>` : ""}`;
+}
+
+function viewSteuer(){
+  const Y = S.year, st = periodStats(d => (d||"").startsWith(String(Y)));
+  const prev = periodStats(d => (d||"").startsWith(String(Y-1)));
+  const years = [...new Set([new Date().getFullYear(), ...S.items.map(i=>+(i.sellDate||i.buyDate||"").slice(0,4)).filter(Boolean)])].sort((a,b)=>b-a);
+  const dacN = Math.min(100, st.count/30*100), dacE = Math.min(100, st.revenue/2000*100);
+  const ratio = Math.max(st.count/30, st.revenue/2000);
+  const ku = prev.revenue <= 25000 && st.revenue <= 100000;
+  const hasSteuer = hasPot("steuer");
+  const reserve = hasSteuer ? potBalances().steuer : 0;
+  const amp = ratio >= 1 ? ["red","Meldegrenze erreicht – bitte prüfen", `Vinted meldet deine Verkäufe aus ${Y} ans Finanzamt. Prüfe, ob du ein Gewerbe anmelden und eine Einnahmen-Überschuss-Rechnung machen musst.`]
+    : ratio >= .8 ? ["yellow","Meldegrenze bald erreicht", `Du hast ${Math.round(ratio*100)} % einer Meldegrenze erreicht. Ab 30 Verkäufen oder 2.000 € meldet Vinted deine Verkäufe ans Finanzamt.`]
+    : ["green","Alles im grünen Bereich", `Du bist unter den Grenzen, ab denen Vinted ans Finanzamt meldet (30 Verkäufe oder 2.000 € im Jahr).`];
+  const bar = (p) => `<div class="bar"><span style="width:${p}%;${p>=100?"background:var(--warn)":""}"></span></div>`;
+  return `<div class="row" style="justify-content:flex-end">
+    ${years.length>1 ? `<select class="more-filter on" id="year" aria-label="Jahr">${years.map(y=>`<option value="${y}" ${y===Y?"selected":""}>${y}</option>`).join("")}</select>` : `<span class="muted num">${Y}</span>`}
+    <button class="btn sm" data-act="export">${icon("download")}Export</button></div>
+  <section class="panel ampel ${amp[0]}"><span class="ampel-dot" aria-hidden="true"></span><div class="stack" style="gap:4px"><h3 style="font-size:1.125rem">${amp[1]}</h3><p class="muted">${amp[2]}</p></div></section>
+  <section class="panel duo"><div class="hero" style="gap:4px"><span class="hero-l">Gewinn ${Y} (EÜR)</span><span class="hero-v ${st.net<0?"neg":""}" style="font-size:2rem" data-count="${st.net}" data-ck="st-net" data-fmt="money">${money(st.net)}</span></div>
+    ${hasSteuer ? `<div class="hero" style="gap:4px"><span class="hero-l">Steuerrücklage im Topf</span><span class="money" style="font-size:1.1rem">${money(reserve||0)}</span></div>` : ""}</section>
+  <div class="stack">
+    ${fold("st-zahlen", "Zahlen im Detail", `<div class="kpis">
+      ${kpi("Umsatz", money(st.revenue), `${st.count} Verkäufe`, "money")}
+      ${kpi("Wareneinsatz", money(st.cogs), "Einkauf verkaufter Artikel", "money")}
+      ${kpi("Kosten", money(st.exp+st.fees), "Ausgaben, Gebühren, Versand", "money")}
+      ${kpi("Gewinn (EÜR)", money(st.net), "Umsatz minus Kosten", "money")}</div>`)}
+    ${fold("st-dac7", "Plattform-Meldung (DAC7)", `<div class="stack" style="gap:6px"><div class="row" style="justify-content:space-between"><span>Verkäufe</span><span class="num">${st.count} / 30</span></div>${bar(dacN)}</div>
+      <div class="stack" style="gap:6px"><div class="row" style="justify-content:space-between"><span>Erlös</span><span class="num"><span class="money">${money0(st.revenue)}</span> / 2.000 €</span></div>${bar(dacE)}</div>`, {info: ratio>=1 ? "erreicht" : `${Math.round(ratio*100)} %`})}
+    ${fold("st-ku", "Kleinunternehmerregelung", `<p class="small">Keine Umsatzsteuer, solange der Vorjahresumsatz höchstens 25.000 € und der laufende höchstens 100.000 € beträgt (§ 19 UStG).</p>
+      <ul class="list small"><li><span>Umsatz ${Y-1}</span><span class="money">${money(prev.revenue)}</span></li><li><span>Umsatz ${Y}</span><span class="money">${money(st.revenue)}</span></li></ul>`, {info: ku ? "möglich" : "prüfen"})}
+    ${fold("st-wissen", "Wichtig zu wissen", `<p class="small">Wer Ware kauft, um sie mit Gewinn weiterzuverkaufen, handelt in der Regel gewerblich: Gewerbeanmeldung und Einnahmen-Überschuss-Rechnung. Der Gewinn zählt zum Einkommen. Gewerbesteuer fällt erst über 24.500 € Gewinn im Jahr an. Der Verkauf eigener, gebrauchter Kleidung bleibt meist steuerfrei.</p><p class="small muted">Diese Übersicht ersetzt keine Steuerberatung.</p>`)}
+  </div>`;
+}
+
+/* ---------- Einstellungen ---------- */
+function viewSetup(){
+  const s = S.settings, sum = s.pots.reduce((a,p)=>a+n(p.pct),0);
+  const single = s.pots.length <= 1;
+  const missingDefaults = DEFAULT_POTS().filter(d => !hasPot(d.id));
+  let confirm = "";
+  const rm = S.potRemove != null ? s.pots[S.potRemove] : null;
+  if (rm){
+    const bal = potBalances()[rm.id] || 0;
+    const hasExp = S.expenses.some(e => resolvePot(e.pot) === rm.id);
+    const others = s.pots.filter(p => p.id !== rm.id);
+    confirm = `<div class="note stack" id="pot-confirm"><b>Topf „${esc(rm.name)}“ entfernen?</b>
+      ${(Math.abs(bal) > 0.004 || hasExp) ? `<div class="fld"><label for="pot-target">Guthaben und Ausgaben übertragen auf:</label><select id="pot-target">${others.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("")}</select></div>` : ""}
+      <div class="row"><button class="btn danger sm" data-act="pot-rm-yes">Entfernen</button><button class="btn ghost sm" data-act="pot-rm-no">Abbrechen</button></div></div>`;
+  }
+  const pots = `<div class="tablewrap"><table><thead><tr><th>Topf</th><th class="r">% vom Gewinn</th><th class="r">Start €</th><th></th></tr></thead><tbody>
+    ${s.pots.map((p,i)=>`<tr><td><div class="fld"><input id="pot-n-${i}" data-pot="${i}" data-k="name" value="${esc(p.name)}" style="min-width:140px" aria-label="Name"></div></td><td class="r"><div class="fld"><input class="num" id="pot-p-${i}" data-pot="${i}" data-k="pct" inputmode="decimal" value="${p.pct}" style="width:80px;text-align:right" aria-label="Prozent"></div></td><td class="r"><div class="fld"><input class="num" id="pot-s-${i}" data-pot="${i}" data-k="start" inputmode="decimal" value="${p.start}" style="width:100px;text-align:right" aria-label="Startguthaben"></div></td><td class="r"><button class="btn ghost sm danger" data-act="del-pot" data-i="${i}" ${single?`disabled title="Mindestens ein Topf wird gebraucht"`:""}>Entfernen</button></td></tr>`).join("")}
+    </tbody></table></div>
+    ${confirm}
+    <div class="row"><button class="btn sm" data-act="add-pot">+ Topf</button>${missingDefaults.length ? `<button class="btn ghost sm" data-act="restore-pots">Standard-Töpfe wiederherstellen</button>` : ""}<span class="small ${sum===100?"muted":"neg"}">Summe ${sum} %${sum===100?"":" · muss 100 % sein"}</span></div>
+    ${!hasPot("reinvest") ? `<p class="small muted" style="white-space:normal">Ohne Wiedereinkauf-Topf wird der Einkaufspreis nicht mehr verbucht.</p>` : ""}`;
+  const goals = `<div class="form">
+      <div class="fld"><label for="g-profit">Gewinn (€)</label><input id="g-profit" data-goal="profit" inputmode="decimal" value="${s.goals.profit}"></div>
+      <div class="fld"><label for="g-revenue">Umsatz (€)</label><input id="g-revenue" data-goal="revenue" inputmode="decimal" value="${s.goals.revenue}"></div>
+      <div class="fld"><label for="g-sold">Verkäufe</label><input id="g-sold" data-goal="sold" inputmode="numeric" value="${s.goals.sold}"></div></div>`;
+  const vinted = `<div class="form">
+      <div class="fld"><label for="s-feePct">Verkäufergebühr (%)</label><input id="s-feePct" data-set="feePct" inputmode="decimal" value="${s.feePct}"></div>
+      <div class="fld"><label for="s-feeFix">Fixgebühr je Verkauf (€)</label><input id="s-feeFix" data-set="feeFix" inputmode="decimal" value="${s.feeFix}"></div>
+      <div class="fld"><label for="s-stale">Ladenhüter nach (Tagen)</label><input id="s-stale" data-set="staleDays" inputmode="numeric" value="${s.staleDays}"></div></div>
+      <p class="muted small" style="white-space:normal">Privat zahlst du bei Vinted keine Gebühr. Bei einem Pro-Konto hier eintragen.</p>`;
+  const lists = `<div class="form"><div class="fld"><label for="s-sources">Einkaufsquellen, eine pro Zeile</label><textarea id="s-sources" data-list="sources">${esc(s.sources.join("\n"))}</textarea></div>
+      <div class="fld"><label for="s-cats">Kategorien, eine pro Zeile</label><textarea id="s-cats" data-list="categories">${esc(s.categories.join("\n"))}</textarea></div></div>`;
+  const data = `<p class="small">${S.mode==="db"?"Deine Daten liegen privat in deinem Claude-Konto und sind auf allen Geräten gleich. Andere sehen nur ihr eigenes Lager.":"Deine Daten liegen nur in diesem Browser. Öffne Flipkontor angemeldet bei Claude, damit sie in deinem Konto gespeichert werden."}</p>
+      <div class="row"><button class="btn" data-act="export">${icon("download")}CSV exportieren</button><button class="btn" data-act="load-demo">Beispieldaten laden</button></div>`;
+  return `<div class="page-head"><h2>Einstellungen</h2></div>
+  <div class="stack" id="setup">
+    ${fold("set-toepfe", "Geldtöpfe", pots, {info:`${s.pots.length} ${s.pots.length===1?"Topf":"Töpfe"}`, open: S.potRemove != null})}
+    ${fold("set-ziele", "Ziele", goals, {info:"pro Monat"})}
+    ${fold("set-vinted", "Vinted & Lager", vinted)}
+    ${fold("set-listen", "Quellen & Kategorien", lists)}
+    ${fold("set-daten", "Daten", data)}
+    ${fold("set-gefahr", "Gefahrenzone", `<p class="small">Löscht alle Artikel und Ausgaben. Das lässt sich nicht rückgängig machen.</p><span id="wipe"><button class="btn danger" data-act="wipe">Alles löschen</button></span>`, {cls:"danger"})}
+  </div>
+  <div class="savebar" id="savebar" ${S.dirty?"":"hidden"}><span>Nicht gespeicherte Änderungen</span><button class="btn primary" data-act="save-settings">Speichern</button></div>`;
+}
+
+/* ---------- Dialoge ---------- */
+const dlg = $("#dlg");
+let dlgCloseT;
+function openDlg(title, body, foot){
+  clearTimeout(dlgCloseT); dlg.classList.remove("closing");
+  dlg.innerHTML = `<form class="dlg" method="dialog" id="dlg-form"><div class="dlg-h"><h3>${title}</h3><button type="button" class="iconbtn" data-act="close" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="dlg-b">${body}</div><div class="dlg-f">${foot}</div></form>`;
+  if (!dlg.open) dlg.showModal();
+}
+function closeDlg(){
+  if (!dlg.open || dlg.classList.contains("closing")) return;
+  if (RM()){ dlg.close(); return; }
+  dlg.classList.add("closing");
+  dlgCloseT = setTimeout(() => { dlg.close(); dlg.classList.remove("closing"); }, 280);
+}
+dlg.addEventListener("cancel", ev => { ev.preventDefault(); closeDlg(); });
+dlg.addEventListener("click", ev => { if (ev.target === dlg) closeDlg(); });
+function opts(list, v){ return list.map(x => `<option ${x===v?"selected":""}>${esc(x)}</option>`).join(""); }
+const supplierNames = () => [...new Set(S.items.map(i => (i.supplierName||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"de"));
+
+let editing = null, allocOpen = false, dlgStars = 0;
+function itemDialog(it){
+  const isNew = !it;
+  editing = it ? JSON.parse(JSON.stringify(it)) : {id:uid("i"), code:"A-"+String((S.settings.seq||0)+1).padStart(4,"0"), status:"lager", buyDate:today(), condition:"Sehr gut", category:S.settings.categories[0], source:S.settings.sources[0], shipCost:0, photo:"", createdAt:today()};
+  allocOpen = false;
+  const e = editing;
+  dlgStars = e.review?.stars || 0;
+  const sources = e.source && !S.settings.sources.includes(e.source) ? [...S.settings.sources, e.source] : S.settings.sources;
+  const cats = e.category && !S.settings.categories.includes(e.category) ? [...S.settings.categories, e.category] : S.settings.categories;
+  const hasSale = (e.sellPrice !== "" && e.sellPrice != null) || !!e.sellDate;
+  const idx = STEPS.indexOf(e.status);
+  const details = `<div class="form">
+    <div class="fld"><label for="f-brand">Marke</label><input id="f-brand" value="${esc(e.brand)}"></div>
+    <div class="fld"><label for="f-category">Kategorie</label><select id="f-category">${opts(cats,e.category)}</select></div>
+    <div class="fld"><label for="f-size">Größe</label><input id="f-size" value="${esc(e.size)}"></div>
+    <div class="fld"><label for="f-condition">Zustand</label><select id="f-condition">${opts(CONDITIONS,e.condition)}</select></div>
+    <div class="fld"><label for="f-location">Lagerort</label><input id="f-location" value="${esc(e.location)}" placeholder="z. B. Kiste 3"></div>
+    <div class="fld"><label for="f-buyDate">Gekauft am</label><input id="f-buyDate" type="date" value="${e.buyDate||""}"></div></div>`;
+  const sale = `<div class="form">
+    <div class="fld"><label for="f-listedAt">Online seit</label><input id="f-listedAt" type="date" value="${e.listedAt||""}"></div>
+    <div class="fld"><label for="f-sellPrice">Verkaufspreis (€)</label><input id="f-sellPrice" inputmode="decimal" value="${e.sellPrice ?? ""}"></div>
+    <div class="fld"><label for="f-sellDate">Verkauft am</label><input id="f-sellDate" type="date" value="${e.sellDate||""}"></div>
+    <div class="fld"><label for="f-shipCost">Versand, den du zahlst (€)</label><input id="f-shipCost" inputmode="decimal" value="${e.shipCost ?? 0}"></div>
+    <div class="fld"><label for="f-shippedAt">Versendet am</label><input id="f-shippedAt" type="date" value="${e.shippedAt||""}"></div>
+    <div class="fld"><label for="f-completedAt">Abgeschlossen am</label><input id="f-completedAt" type="date" value="${e.completedAt||""}"></div></div>`;
+  const listing = `<div class="fld"><label for="f-notes">Besonderheiten (Maße, Mängel, Material)</label><input id="f-notes" value="${esc(e.notes)}" placeholder="z. B. Achselbreite 58 cm"></div>
+    <div class="fld"><label for="f-listing">Beschreibung</label><textarea id="f-listing">${esc(e.listing||"")}</textarea></div>
+    <div class="row"><button type="button" class="btn sm" data-act="gen-listing">Text erzeugen</button><button type="button" class="btn sm" data-act="ai-listing" id="ai-btn" hidden>Mit Claude formulieren</button><button type="button" class="btn sm" data-act="copy-listing">Kopieren</button></div>`;
+  const review = `<div id="dlg-stars">${starPicker(dlgStars, "dlg-star")}</div>
+    <div class="fld"><label for="f-revText">Bewertungstext</label><input id="f-revText" value="${esc(e.review?.text)}"></div>
+    <div class="fld"><label for="f-revBuyer">Käufer</label><input id="f-revBuyer" value="${esc(e.review?.buyer)}"></div>
+    ${e.review ? `<div class="row"><button type="button" class="btn ghost sm danger" data-act="dlg-review-clear">Bewertung löschen</button></div>` : ""}`;
+  openDlg(`${isNew?"Neuer Artikel":"Artikel"} <span class="code">${esc(e.code)}</span>`, `
+  <div class="photo"><label class="photo-pick" for="f-photo"><span class="ph" id="ph-box">${e.photo ? `<img src="${e.photo}" alt="">` : icon("camera")}</span><span><b id="ph-label">${e.photo ? "Foto ändern" : "Foto hinzufügen"}</b><span class="muted small">Wird automatisch verkleinert</span></span></label><input id="f-photo" class="sr-only" type="file" accept="image/*"><span id="ph-rm">${e.photo ? `<button type="button" class="btn ghost sm danger" data-act="photo-remove">Entfernen</button>` : ""}</span></div>
+  <div class="form">
+    <div class="fld full"><label for="f-name">Bezeichnung</label><input id="f-name" required value="${esc(e.name)}" placeholder="z. B. Carhartt Detroit Jacke"></div>
+    <div class="fld"><label for="f-buyPrice">Einkaufspreis (€)</label><input id="f-buyPrice" inputmode="decimal" value="${e.buyPrice ?? ""}"></div>
+    <div class="fld"><label for="f-listPrice">Angebotspreis (€)</label><input id="f-listPrice" inputmode="decimal" value="${e.listPrice ?? ""}"></div>
+    <div class="fld"><label for="f-source">Quelle</label><select id="f-source">${opts(sources,e.source)}</select></div>
+    <div class="fld"><label for="f-status">Status</label><select id="f-status">${Object.entries(STATUS).map(([k,l])=>`<option value="${k}" ${k===e.status?"selected":""}>${l}</option>`).join("")}</select>
+      ${!isNew && idx > 0 ? `<span id="back-wrap"><button type="button" class="linkbtn" data-act="step-back">Einen Schritt zurück</button></span>` : ""}</div>
+    <div class="fld full" id="sup-wrap" ${e.source===SUPPLIER?"":"hidden"}><label for="f-supplierName">Supplier-Name</label><input id="f-supplierName" list="sup-list" value="${esc(e.supplierName)}" placeholder="z. B. Großhändler Berlin"><datalist id="sup-list">${supplierNames().map(x=>`<option value="${esc(x)}"></option>`).join("")}</datalist></div>
+  </div>
+  ${fold("dlg-details", "Details zum Artikel", details, {persist:false})}
+  ${fold("dlg-sale", "Verkauf", sale, {persist:false, open:hasSale})}
+  ${SOLD(e.status) || e.review ? fold("dlg-review", "Bewertung", review, {persist:false, info: e.review ? `${e.review.stars} ★` : ""}) : ""}
+  ${fold("dlg-listing", "Listing-Text für Vinted", listing, {persist:false})}`,
+  `<div class="profit-line" id="item-calc"></div>
+   ${isNew?"":`<span id="del-wrap" style="margin-right:auto"><button type="button" class="btn danger" data-act="del-item">Löschen</button></span>`}
+   ${!isNew && !SOLD(e.status)?`<button type="button" class="btn" data-act="quick-sell">Verkauft</button>`:""}
+   <button type="button" class="btn primary" data-act="save-item">Speichern</button>`);
+  itemCalc();
+  sampleReady.then(s => { const b = $("#ai-btn"); if (s && b) b.hidden = false; });
+}
+function readItemForm(){
+  const e = editing, v = id => $("#f-"+id)?.value ?? "";
+  ["name","brand","category","size","condition","location","status","buyDate","source","listedAt","sellDate","shippedAt","completedAt","notes","listing","supplierName"].forEach(k => { if ($("#f-"+k)) e[k] = v(k).trim(); });
+  ["buyPrice","listPrice","sellPrice","shipCost"].forEach(k => { const raw = v(k).trim(); e[k] = raw==="" ? "" : n(raw); });
+  if (e.source !== SUPPLIER) delete e.supplierName;
+  return e;
+}
+function itemCalc(){
+  const box = $("#item-calc"); if (!box) return;
+  const e = readItemForm();
+  const price = e.sellPrice!=="" ? n(e.sellPrice) : n(e.listPrice);
+  const tmp = {...e, sellPrice:price, status:"verkauft"};
+  const p = itemProfit(tmp), a = allocate(tmp);
+  box.innerHTML = price ? `<button type="button" class="profit-btn" data-act="toggle-alloc" aria-expanded="${allocOpen}">Gewinn${e.sellPrice!==""?"":" bei Angebotspreis"}: <b class="money ${p>=0?"pos":"neg"}">${money(p)}</b>${CHEV.replace('class="chev"', `class="chev" style="${allocOpen?"transform:rotate(180deg)":""}"`)}</button>
+    <div class="alloc" ${allocOpen?"":"hidden"}>${S.settings.pots.map(pt=>`<span>${esc(pt.name)} <span class="money">${money(a[pt.id]||0)}</span></span>`).join("")}</div>` : `<span class="muted small">Preis eintragen, dann siehst du den Gewinn.</span>`;
+}
+async function saveItem(){
+  const e = readItemForm();
+  if (!e.name){ $("#f-name").setAttribute("aria-invalid","true"); $("#f-name").focus(); toast("Bitte eine Bezeichnung eintragen."); return; }
+  if (SOLD(e.status)){
+    if (e.sellPrice==="") e.sellPrice = n(e.listPrice);
+    if (!e.sellDate) e.sellDate = today();
+    e.alloc = allocate(e);
+  } else { delete e.alloc; }
+  if ((e.status==="gelistet") && !e.listedAt) e.listedAt = today();
+  if ((e.status==="versendet" || e.status==="abgeschlossen") && !e.shippedAt) e.shippedAt = today();
+  if (e.status==="abgeschlossen" && !e.completedAt) e.completedAt = today();
+  if ($("#dlg-stars")){
+    if (dlgStars > 0) e.review = {stars:dlgStars, text:$("#f-revText").value.trim(), buyer:$("#f-revBuyer").value.trim(), date: e.review?.date || today()};
+    else delete e.review;
+  }
+  const isNew = !S.items.some(i=>i.id===e.id);
+  closeDlg();
+  if (isNew){ S.settings.seq = (S.settings.seq||0)+1; await safe(store.saveSettings()); }
+  await safe(store.put("items", e), isNew ? "Artikel angelegt" : "Gespeichert");
+}
+function listingTemplate(e){
+  const lines = [
+    `${e.brand ? e.brand+" " : ""}${e.name}${e.size ? " – Größe "+e.size : ""}`,
+    "",
+    `Zustand: ${e.condition||"gut"}${e.notes ? ". "+e.notes : ", keine Mängel"}.`,
+    e.category ? `Kategorie: ${e.category}` : "",
+    "",
+    "✔ Aus tierfreiem Nichtraucherhaushalt",
+    "✔ Versand innerhalb von 1–2 Tagen",
+    "✔ Bündel mit anderen Artikeln möglich, schreib mir gern",
+    "",
+    "#"+[e.brand, e.category, e.name?.split(" ").slice(-1)[0], "vintage", "secondhand"].filter(Boolean).map(x=>x.toLowerCase().replace(/[^a-zäöüß0-9]/g,"")).filter(Boolean).join(" #")
+  ];
+  return lines.filter((l,i,a)=>!(l==="" && a[i-1]==="")).join("\n");
+}
+
+function expDialog(ex, withdraw){
+  const e = ex ? {...ex} : {id:uid("x"), date:today(), category:withdraw?"Entnahme":"Verpackung", amount:"", pot:withdraw?"privat":"puffer", note:""};
+  e.pot = resolvePot(e.pot);
+  if (!S.settings.pots.some(p=>p.id===e.pot)) e.pot = S.settings.pots[S.settings.pots.length-1].id;
+  openDlg(ex ? "Ausgabe bearbeiten" : withdraw ? "Geld entnehmen" : "Neue Ausgabe", `<div class="form">
+    <div class="fld"><label for="x-amount">Betrag (€)</label><input id="x-amount" inputmode="decimal" value="${e.amount}" required></div>
+    <div class="fld"><label for="x-date">Datum</label><input id="x-date" type="date" value="${e.date}"></div>
+    <div class="fld"><label for="x-category">Kategorie</label><select id="x-category">${opts(EXP_CATS,e.category)}</select></div>
+    <div class="fld"><label for="x-pot">Bezahlt aus Topf</label><select id="x-pot">${S.settings.pots.map(p=>`<option value="${p.id}" ${p.id===e.pot?"selected":""}>${esc(p.name)}</option>`).join("")}</select></div>
+    <div class="fld full"><label for="x-note">Notiz</label><input id="x-note" value="${esc(e.note)}"></div></div>
+    <p class="muted small" style="white-space:normal">Entnahmen zählen nicht als Betriebsausgabe, sie verringern nur den Topf.</p>`,
+    `${ex?`<span id="del-wrap" style="margin-right:auto"><button type="button" class="btn danger" data-act="del-exp" data-id="${e.id}">Löschen</button></span>`:""}<button type="button" class="btn primary" data-act="save-exp" data-id="${e.id}">Speichern</button>`);
+  dlg.dataset.exp = JSON.stringify(e);
+}
+async function saveExp(){
+  const e = JSON.parse(dlg.dataset.exp || "{}");
+  e.amount = n($("#x-amount").value); e.date = $("#x-date").value || today(); e.category = $("#x-category").value; e.pot = $("#x-pot").value; e.note = $("#x-note").value.trim();
+  if (!e.amount){ $("#x-amount").setAttribute("aria-invalid","true"); $("#x-amount").focus(); toast("Bitte einen Betrag eintragen."); return; }
+  closeDlg(); await safe(store.put("expenses", e), "Ausgabe gespeichert");
+}
+
+/* ---------- Schritt-Sheets ---------- */
+let sheetItem = null, sheetStars = 0, sheetComplete = false;
+function priceSheet(it){
+  sheetItem = it;
+  openDlg(`Online stellen <span class="code">${esc(it.code)}</span>`, `<p>${esc(it.name)}</p><div class="fld"><label for="p-price">Angebotspreis (€)</label><input id="p-price" inputmode="decimal"></div>`,
+    `<button type="button" class="btn primary" data-act="sheet-list">Online stellen</button>`, true);
+  setTimeout(() => $("#p-price")?.focus(), 50);
+}
+function sellDialog(it){
+  sheetItem = it;
+  openDlg(`Verkauf <span class="code">${esc(it.code)}</span>`, `<p>${esc(it.name)}</p><div class="form">
+    <div class="fld"><label for="s-price">Verkaufspreis (€)</label><input id="s-price" inputmode="decimal" value="${n(it.listPrice)||""}"></div>
+    <div class="fld"><label for="s-date">Datum</label><input id="s-date" type="date" value="${today()}"></div>
+    <div class="fld full"><label for="s-ship">Versand, den du zahlst (€)</label><input id="s-ship" inputmode="decimal" value="${n(it.shipCost)||0}"></div></div>
+    <p id="sell-profit"></p>`,
+    `<button type="button" class="btn primary" data-act="confirm-sell" data-id="${it.id}">Verkauf buchen</button>`, true);
+  sellProfit();
+  setTimeout(() => { const f = $("#s-price"); if (f){ f.focus(); f.select(); } }, 50);
+}
+function sellProfit(){
+  const out = $("#sell-profit"); if (!out || !sheetItem) return;
+  const p = itemProfit({...sheetItem, status:"verkauft", sellPrice:n($("#s-price").value), shipCost:n($("#s-ship").value)});
+  out.innerHTML = `Gewinn: <b class="money ${p>=0?"pos":"neg"}">${money(p)}</b>`;
+}
+function reviewSheet(it, complete){
+  sheetItem = it; sheetComplete = complete; sheetStars = 0;
+  openDlg(complete ? "Bestellung abschließen" : "Bewertung eintragen", `<p><span class="code">${esc(it.code)}</span> ${esc(it.name)}</p>
+    <p style="font-weight:600">Hat der Käufer eine Bewertung hinterlassen?</p>
+    <div id="sheet-stars">${starPicker(0, "sheet-star")}</div>
+    <div class="fld"><label for="r-text">Bewertungstext (optional)</label><input id="r-text"></div>
+    <div class="fld"><label for="r-buyer">Käufer (optional)</label><input id="r-buyer"></div>`,
+    complete ? `<button type="button" class="btn" data-act="complete-plain">Ohne Bewertung abschließen</button><button type="button" class="btn primary" id="rev-go" data-act="complete-review" disabled>Mit Bewertung abschließen</button>`
+             : `<button type="button" class="btn ghost" data-act="close">Abbrechen</button><button type="button" class="btn primary" id="rev-go" data-act="complete-review" disabled>Bewertung speichern</button>`, true);
+}
+
+/* ---------- Export ---------- */
+function csv(){
+  const head = ["Nummer","Bezeichnung","Marke","Kategorie","Größe","Zustand","Quelle","Supplier","Status","Einkauf","Gekauft am","Angebotspreis","Online seit","Verkauft für","Verkauft am","Versendet am","Abgeschlossen am","Versand","Gebühr","Gewinn","Lagerort","Sterne","Bewertung","Käufer"];
+  const q = v => { const s = String(v ?? ""); return /[;"\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; };
+  const dec = v => v==="" || v==null ? "" : n(v).toFixed(2).replace(".",",");
+  const rows = S.items.map(i => [i.code,i.name,i.brand,i.category,i.size,i.condition,i.source,i.supplierName,STATUS[i.status],dec(i.buyPrice),i.buyDate,dec(i.listPrice),i.listedAt,dec(i.sellPrice),i.sellDate,i.shippedAt,i.completedAt,dec(i.shipCost),SOLD(i.status)?dec(itemFee(i)):"",SOLD(i.status)?dec(itemProfit(i)):"",i.location,i.review?.stars,i.review?.text,i.review?.buyer].map(q).join(";"));
+  const ex = ["","Ausgaben","Datum;Kategorie;Betrag;Topf;Notiz", ...S.expenses.map(e => [e.date,e.category,dec(e.amount),S.settings.pots.find(p=>p.id===resolvePot(e.pot))?.name,e.note].map(q).join(";"))];
+  return "﻿" + [head.join(";"), ...rows, ...ex].join("\r\n");
+}
+async function exportCsv(){
+  const data = csv(), name = `flipkontor-${today()}.csv`;
+  if (!window.claude?.use){
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([data], {type:"text/csv;charset=utf-8"})); a.download = name;
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast("Export bereit", null, true); return;
+  }
+  const dl = await downloadsReady;
+  if (dl){ try { await dl.save({filename:name, data}); toast("Export bereit"); return; } catch(e){ if (e?.code==="cancelled" || e?.code==="declined") return; } }
+  try { await navigator.clipboard.writeText(data); toast("CSV in die Zwischenablage kopiert. In Excel einfügen."); }
+  catch(e){ toast("Export ist hier nicht möglich."); }
+}
+
+/* ---------- Ereignisse ---------- */
+let toastT, toastUndo = null;
+function toast(msg, undo, ok){
+  let t = $(".toast"); if (!t){ t = document.createElement("div"); t.className = "toast out"; t.setAttribute("role","status"); document.body.append(t); void t.offsetWidth; }
+  t.innerHTML = `${ok ? `<svg class="ok-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>` : ""}<span>${esc(msg)}</span>${undo ? `<button type="button" class="toast-undo" data-act="undo">Rückgängig</button>` : ""}`;
+  toastUndo = undo || null; t.classList.remove("out"); clearTimeout(toastT);
+  toastT = setTimeout(() => { t.classList.add("out"); toastUndo = null; }, undo ? 6000 : 2600);
+}
+function confirmInline(wrapSel, label, run, yes = "Ja, löschen"){
+  const w = $(wrapSel); if (!w) return;
+  confirmInline.html = w.innerHTML;
+  w.innerHTML = `<span class="small">${label}</span> <button type="button" class="btn danger sm" data-act="__yes">${yes}</button> <button type="button" class="btn ghost sm" data-act="__no">Abbrechen</button>`;
+  confirmInline.run = run; confirmInline.wrap = wrapSel;
+}
+function setTab(t){ S.tab = t; try{localStorage.setItem("fk-tab",S.tab);}catch(e){} }
+function markDirty(){ S.dirty = true; const b = $("#savebar"); if (b) b.hidden = false; }
+
+/* Ein Schritt in der Checkliste: speichern, Toast mit Rückgängig (stellt den vorherigen Stand samt Zeitstempeln wieder her) */
+async function applyStep(id, base, changes, msg){
+  const prev = JSON.parse(JSON.stringify(S.items.find(i => i.id === id) || base));
+  const next = {...JSON.parse(JSON.stringify(base)), ...changes};
+  for (const k in changes) if (changes[k] === undefined) delete next[k];
+  const done = store.put("items", next);
+  toast(msg, () => safe(store.put("items", prev), "Rückgängig gemacht"), true);
+  requestAnimationFrame(() => { const el = document.getElementById("item-" + id); if (el && !el.dataset.leaving){ el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1000); } });
+  try { await done; }
+  catch(e){ await safe(Promise.reject(e)); }
+}
+function stepFor(it){
+  switch (it.status){
+    case "lager":
+      if (it.listPrice === "" || it.listPrice == null || !n(it.listPrice)) priceSheet(it);
+      else applyStep(it.id, it, {status:"gelistet", listedAt:today()}, "Online gestellt");
+      break;
+    case "gelistet": sellDialog(it); break;
+    case "verkauft": applyStep(it.id, it, {status:"versendet", shippedAt:today()}, "Versendet"); break;
+    case "versendet": reviewSheet(it, true); break;
+    case "abgeschlossen": if (!it.review) reviewSheet(it, false); break;
+  }
+}
+function stepBack(it){
+  const idx = STEPS.indexOf(it.status); if (idx <= 0) return;
+  const to = STEPS[idx-1];
+  const ch = {status:to};
+  if (it.status === "gelistet") ch.listedAt = undefined;
+  if (it.status === "verkauft"){ ch.alloc = undefined; ch.sellDate = undefined; ch.sellPrice = undefined; }
+  if (it.status === "versendet") ch.shippedAt = undefined;
+  if (it.status === "abgeschlossen") ch.completedAt = undefined;
+  closeDlg();
+  applyStep(it.id, it, ch, `Zurück auf „${STATUS[to]}“`);
+}
+function paintStars(sel, val, act){ const w = $(sel); if (w) w.innerHTML = starPicker(val, act); }
+
+document.addEventListener("click", async ev => {
+  const t = ev.target.closest("[data-tab],[data-act],[data-filter],[data-seg]"); if (!t) return;
+  if (t.disabled) return;
+  if (t.dataset.tab){ if (t.dataset.tab === S.tab){ window.scrollTo({top:0, behavior: RM() ? "auto" : "smooth"}); return; } setTab(t.dataset.tab); closeDlg(); window.scrollTo(0,0); render(); $("#fab").classList.remove("away"); return; }
+  if (t.dataset.filter){ S.filter.status = t.dataset.filter; render(); return; }
+  if (t.dataset.seg){ S.anaSeg = t.dataset.seg; try{localStorage.setItem("fk-ana",S.anaSeg);}catch(e){} render(); return; }
+  const id = t.dataset.id, it = S.items.find(i=>i.id===id);
+  switch (t.dataset.act){
+    case "goto": {
+      setTab(t.dataset.to); if (t.dataset.filterTo) S.filter = {status:t.dataset.filterTo, q:""};
+      if (t.dataset.segTo) S.anaSeg = t.dataset.segTo;
+      render(); const target = t.dataset.scroll && document.getElementById(t.dataset.scroll);
+      if (target) target.scrollIntoView({block:"start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); else window.scrollTo(0,0);
+      break; }
+    case "reset-filter": S.filter = {status:"aktiv", q:""}; render(); break;
+    case "undo": { const u = toastUndo; toastUndo = null; const tt = $(".toast"); if (tt) tt.classList.add("out"); if (u) await u(); break; }
+    case "new-item": itemDialog(null); break;
+    case "edit": if (it) itemDialog(it); break;
+    case "more-text": { const p = t.previousElementSibling; if (p) p.classList.remove("clamp"); t.remove(); break; }
+    case "close": closeDlg(); break;
+    case "photo-remove": editing.photo = ""; $("#ph-box").innerHTML = icon("camera"); $("#ph-label").textContent = "Foto hinzufügen"; $("#ph-rm").innerHTML = ""; $("#f-photo").value = ""; break;
+    case "save-item": ev.preventDefault(); saveItem(); break;
+    case "toggle-alloc": allocOpen = !allocOpen; itemCalc(); break;
+    case "del-item": confirmInline("#del-wrap", "Wirklich löschen?", async () => { const x = editing.id; closeDlg(); await safe(store.del("items", x), "Artikel gelöscht"); }); break;
+    case "step": if (it) stepFor(it); break;
+    case "review": if (it) reviewSheet(it, false); break;
+    case "step-back": {
+      const cur = S.items.find(i => i.id === editing?.id); if (!cur) break;
+      if (cur.status === "verkauft") confirmInline("#back-wrap", "Verkauf wirklich zurücknehmen?", async () => stepBack(cur), "Zurücknehmen");
+      else stepBack(cur);
+      break; }
+    case "quick-sell": { readItemForm(); sellDialog({...editing}); break; }
+    case "sheet-list": {
+      const p = n($("#p-price").value); if (!p){ toast("Bitte einen Angebotspreis eintragen."); break; }
+      const base = sheetItem; closeDlg(); await applyStep(base.id, base, {status:"gelistet", listedAt:today(), listPrice:p}, "Online gestellt"); break; }
+    case "confirm-sell": {
+      const base = sheetItem || it; if (!base) break;
+      const e = {...base, status:"verkauft", sellPrice:n($("#s-price").value), sellDate:$("#s-date").value||today(), shipCost:n($("#s-ship").value)};
+      const alloc = allocate(e); closeDlg();
+      await applyStep(base.id, base, {status:"verkauft", sellPrice:e.sellPrice, sellDate:e.sellDate, shipCost:e.shipCost, alloc}, `Verkauft · ${money(itemProfit(e))} Gewinn`); break; }
+    case "sheet-star": sheetStars = +t.dataset.v; paintStars("#sheet-stars", sheetStars, "sheet-star"); $("#rev-go").disabled = false; break;
+    case "dlg-star": dlgStars = +t.dataset.v; paintStars("#dlg-stars", dlgStars, "dlg-star"); break;
+    case "dlg-review-clear": dlgStars = 0; paintStars("#dlg-stars", 0, "dlg-star"); $("#f-revText").value = ""; $("#f-revBuyer").value = ""; toast("Bewertung wird beim Speichern entfernt"); break;
+    case "complete-plain": { const base = sheetItem; closeDlg(); await applyStep(base.id, base, {status:"abgeschlossen", completedAt:today()}, "Bestellung abgeschlossen"); break; }
+    case "complete-review": {
+      if (!sheetStars) break;
+      const base = sheetItem, review = {stars:sheetStars, text:$("#r-text").value.trim(), buyer:$("#r-buyer").value.trim(), date:today()};
+      closeDlg();
+      if (sheetComplete) await applyStep(base.id, base, {status:"abgeschlossen", completedAt:today(), review}, "Bestellung abgeschlossen");
+      else await applyStep(base.id, base, {review}, "Bewertung gespeichert");
+      break; }
+    case "ship": if (it) await applyStep(it.id, it, {status:"versendet", shippedAt:today()}, "Versendet"); break;
+    case "reprice": if (it) await safe(store.put("items", {...it, listPrice:n(t.dataset.price), listedAt:today(), status:"gelistet"}), `Neuer Preis ${money0(t.dataset.price)}`); break;
+    case "gen-listing": { const e = readItemForm(); $("#f-listing").value = listingTemplate(e); break; }
+    case "ai-listing": aiListing(t); break;
+    case "copy-listing": { const v = $("#f-listing").value; try { await navigator.clipboard.writeText(v); toast("Text kopiert"); } catch(e){ $("#f-listing").select(); toast("Text markiert. Jetzt kopieren."); } break; }
+    case "new-exp": expDialog(null,false); break;
+    case "new-withdraw": expDialog(null,true); break;
+    case "edit-exp": { const e = S.expenses.find(x=>x.id===id); if (e) expDialog(e); break; }
+    case "save-exp": saveExp(); break;
+    case "del-exp": confirmInline("#del-wrap", "Ausgabe löschen?", async () => { closeDlg(); await safe(store.del("expenses", id), "Ausgabe gelöscht"); }); break;
+    case "__yes": { const run = confirmInline.run; confirmInline.run = null; if (run) await run(); break; }
+    case "__no": { const w = $(confirmInline.wrap); if (w) w.innerHTML = confirmInline.html; confirmInline.run = null; break; }
+    case "add-pot": collectSettings(); S.settings.pots.push({id:uid("p"), name:"Neuer Topf", pct:0, start:0}); S.dirty = true; render(); break;
+    case "del-pot": collectSettings(); S.potRemove = +t.dataset.i; render(); break;
+    case "pot-rm-no": S.potRemove = null; render(); break;
+    case "pot-rm-yes": {
+      collectSettings();
+      const set = S.settings, old = set.pots[S.potRemove]; if (!old || set.pots.length <= 1) break;
+      const target = $("#pot-target")?.value || set.pots.find(p => p.id !== old.id).id;
+      const before = potBalances();
+      const cand = JSON.parse(JSON.stringify(set));
+      cand.pots = cand.pots.filter(p => p.id !== old.id);
+      cand.potRedirects = {...(cand.potRedirects||{}), [old.id]: target};
+      const desired = {}; cand.pots.forEach(p => desired[p.id] = before[p.id] + (p.id === target ? before[old.id] : 0));
+      rebalance(cand, desired);
+      S.settings = cand; S.potRemove = null; S.dirty = true; render(); break; }
+    case "restore-pots": {
+      collectSettings();
+      const before = potBalances(), cand = JSON.parse(JSON.stringify(S.settings));
+      const missing = DEFAULT_POTS().filter(d => !hasPot(d.id, cand)); if (!missing.length) break;
+      missing.forEach(m => { cand.pots.push({...m, pct:0, start:0}); delete cand.potRedirects[m.id]; });
+      const desired = {}; cand.pots.forEach(p => desired[p.id] = p.id in before ? before[p.id] : 0);
+      rebalance(cand, desired);
+      S.settings = cand; S.dirty = true; render(); break; }
+    case "save-settings": {
+      collectSettings(); const sum = S.settings.pots.reduce((a,p)=>a+n(p.pct),0);
+      if (sum!==100){ toast(`Die Töpfe ergeben ${sum} %. Bitte auf 100 % bringen.`); render(); break; }
+      S.dirty = false; await safe(store.saveSettings(), "Einstellungen gespeichert");
+      for (const e of S.expenses){ const r = resolvePot(e.pot); if (r !== e.pot && hasPot(r)) await safe(store.put("expenses", {...e, pot:r})); }
+      render(); break; }
+    case "export": exportCsv(); break;
+    case "load-demo": await loadDemo(); break;
+    case "clear-demo": await clearAll(); break;
+    case "wipe": confirmInline("#wipe", "Alle Artikel und Ausgaben löschen?", clearAll); break;
+  }
+});
+/* Kleine Fenster (Info, Beispieldaten) schließen, wenn daneben getippt wird */
+document.addEventListener("click", ev => {
+  document.querySelectorAll("details.tip[open], details.pop[open]").forEach(d => { if (!d.contains(ev.target)) d.open = false; });
+}, true);
+let lastY = 0;
+addEventListener("scroll", () => {
+  const y = scrollY; $(".top").classList.toggle("scrolled", y > 4);
+  if (Math.abs(y - lastY) > 8){ $("#fab").classList.toggle("away", y > lastY && y > 160); lastY = y; }
+}, {passive:true});
+document.addEventListener("keydown", ev => {
+  if ((ev.key === "Enter" || ev.key === " ") && ev.target.classList?.contains("rev-card")){ ev.preventDefault(); ev.target.click(); }
+});
+document.addEventListener("toggle", ev => {
+  const d = ev.target;
+  if (d.dataset?.fold){ try { localStorage.setItem("fk-open-"+d.dataset.fold, d.open ? "1" : "0"); } catch(e){} }
+}, true);
+document.addEventListener("input", ev => {
+  const t = ev.target;
+  if (t.getAttribute?.("aria-invalid")) t.removeAttribute("aria-invalid");
+  if (t.id === "q"){ S.filter.q = t.value; const pos = t.selectionStart; render(); if (!window.morphdom){ const q = $("#q"); q.focus(); q.setSelectionRange(pos,pos); } return; }
+  if (t.id?.startsWith("c-")) updateCalc();
+  if (t.id === "s-price" || t.id === "s-ship") sellProfit();
+  if (t.id?.startsWith("f-") && t.type !== "file") itemCalc();
+  if (t.closest?.("#setup")) markDirty();
+});
+document.addEventListener("change", async ev => {
+  const t = ev.target;
+  if (t.id === "filter-more" && t.value){ S.filter.status = t.value; render(); return; }
+  if (t.id === "year"){ S.year = +t.value; render(); return; }
+  if (t.id === "f-source"){ const w = $("#sup-wrap"); if (w) w.hidden = t.value !== SUPPLIER; }
+  if (t.id === "f-status" && SOLD(t.value) && !$("#f-sellDate").value){ $("#f-sellDate").value = today(); if (!$("#f-sellPrice").value) $("#f-sellPrice").value = $("#f-listPrice").value; const f = $("#fold-dlg-sale"); if (f) f.open = true; itemCalc(); }
+  if (t.id === "f-status" && t.value==="gelistet" && !$("#f-listedAt").value){ $("#f-listedAt").value = today(); }
+  if (t.id === "f-photo" && t.files?.[0]){
+    try { editing.photo = await shrink(t.files[0]); $("#ph-box").innerHTML = `<img src="${editing.photo}" alt="">`; $("#ph-label").textContent = "Foto ändern"; $("#ph-rm").innerHTML = `<button type="button" class="btn ghost sm danger" data-act="photo-remove">Entfernen</button>`; }
+    catch(e){ toast("Dieses Bild konnte nicht gelesen werden."); }
+  }
+});
+function collectSettings(){
+  const s = S.settings;
+  document.querySelectorAll("[data-pot]").forEach(i => { const p = s.pots[+i.dataset.pot]; if (!p) return; p[i.dataset.k] = i.dataset.k==="name" ? i.value.trim()||"Topf" : n(i.value); });
+  document.querySelectorAll("[data-goal]").forEach(i => s.goals[i.dataset.goal] = n(i.value));
+  document.querySelectorAll("[data-set]").forEach(i => s[i.dataset.set] = n(i.value));
+  document.querySelectorAll("[data-list]").forEach(i => { const l = i.value.split("\n").map(x=>x.trim()).filter(Boolean); if (l.length) s[i.dataset.list] = l; });
+}
+function shrink(file){
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onerror = rej;
+    r.onload = () => { const img = new Image(); img.onerror = rej; img.onload = () => {
+      const max = 420, k = Math.min(1, max/Math.max(img.width,img.height));
+      const c = document.createElement("canvas"); c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",0.72)); }; img.src = r.result; };
+    r.readAsDataURL(file);
+  });
+}
+
+/* ---------- Claude für Listing-Texte, Downloads ---------- */
+const capReady = name => window.claude?.use ? claude.use(name).catch(()=>null) : Promise.resolve(null);
+const sampleReady = capReady("sample");
+const downloadsReady = capReady("downloads");
+async function aiListing(btn){
+  const sample = await sampleReady; if (!sample) return;
+  const e = readItemForm(), out = $("#f-listing");
+  btn.disabled = true; const old = btn.textContent; btn.textContent = "Schreibt …";
+  const prompt = `Schreibe eine Vinted-Artikelbeschreibung auf Deutsch für diesen Second-Hand-Artikel. Ehrlich, locker, ohne Übertreibung, maximal 90 Wörter. Erste Zeile: prägnanter Titel (max. 60 Zeichen). Danach Zustand und Besonderheiten, dann Maße falls bekannt, am Ende 5 passende Hashtags. Keine Emojis außer ✔ für Aufzählungen. Gib nur den Text aus.
+
+Artikel: ${e.name}
+Marke: ${e.brand||"unbekannt"}
+Kategorie: ${e.category||"-"}
+Größe: ${e.size||"-"}
+Zustand: ${e.condition||"-"}
+Besonderheiten: ${e.notes||"keine angegeben"}`;
+  try { const r = await sample(prompt, {modelTier:"quick", onText:({text}) => { out.value = text; }}); out.value = r.text.trim(); }
+  catch(err){ toast(err?.code==="not_granted" ? "Claude ist für diese Seite nicht freigegeben." : err?.code==="rate_limited" ? "Gerade zu viele Anfragen. Versuch es gleich noch einmal." : "Der Text ließ sich gerade nicht erzeugen. Versuch es noch einmal."); }
+  finally { btn.disabled = false; btn.textContent = old; }
+}
+
+renderTabs();
+store.init();
+</script>
+
+</body>
+</html>
