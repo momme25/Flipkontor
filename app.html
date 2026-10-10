@@ -256,6 +256,7 @@ select.more-filter.on{background-color:var(--surface);color:var(--ink);border-co
 .tour-b{display:flex;gap:8px;align-items:center;margin-top:6px}
 .tour-b .grow{flex:1}
 html.touring{overflow:hidden}
+html.touring .fab.away{transform:none;opacity:1}
 @media (prefers-reduced-motion: reduce){.tour-spot,.tour-card{transition:none}}
 .lager-tools{display:flex;gap:var(--s1);align-items:center;flex-wrap:wrap}
 .bundle-chip{background:var(--accent2-soft);color:var(--accent2)}
@@ -1679,7 +1680,7 @@ function startTour(force){
     addEventListener("resize", () => { if (tourI >= 0) tourPlace(); });
     addEventListener("keydown", ev => { if (tourI < 0) return; if (ev.key === "Escape") endTour(); if (ev.key === "ArrowRight") tourGo(tourI + 1); if (ev.key === "ArrowLeft") tourGo(tourI - 1, -1); });
   }
-  el.hidden = false; document.documentElement.classList.add("touring");
+  el.hidden = false; document.documentElement.classList.add("touring"); $("#fab")?.classList.remove("away");
   tourGo(0);
 }
 function endTour(){ tourI = -1; const el = $("#tour"); if (el) el.hidden = true; document.documentElement.classList.remove("touring"); }
@@ -1706,7 +1707,8 @@ function tourPlace(){
   card.style.width = cw + "px";
   if (!t){ spot.style.cssText = "left:50%;top:50%;width:0;height:0"; card.style.left = (W - cw) / 2 + "px"; card.style.top = Math.max(16, (H - card.offsetHeight) / 2) + "px"; return; }
   const r = t.getBoundingClientRect(), pad = 6;
-  spot.style.cssText = `left:${r.left - pad}px;top:${r.top - pad}px;width:${r.width + pad * 2}px;height:${r.height + pad * 2}px`;
+  const rad = Math.min(parseFloat(getComputedStyle(t).borderTopLeftRadius) || 8, r.height / 2) + pad;
+  spot.style.cssText = `left:${r.left - pad}px;top:${r.top - pad}px;width:${r.width + pad * 2}px;height:${r.height + pad * 2}px;border-radius:${rad}px`;
   const ch = card.offsetHeight, below = r.bottom + pad + 12, above = r.top - pad - 12 - ch;
   const top = below + ch <= H - 12 ? below : above >= 12 ? above : Math.max(12, H - ch - 12);
   card.style.top = top + "px";
@@ -2155,7 +2157,7 @@ document.addEventListener("click", ev => {
 let lastY = 0;
 addEventListener("scroll", () => {
   const y = scrollY; $(".top").classList.toggle("scrolled", y > 4);
-  if (Math.abs(y - lastY) > 8){ $("#fab").classList.toggle("away", y > lastY && y > 160); lastY = y; }
+  if (Math.abs(y - lastY) > 8){ $("#fab").classList.toggle("away", tourI < 0 && y > lastY && y > 160); lastY = y; }
 }, {passive:true});
 document.addEventListener("keydown", ev => {
   if ((ev.key === "Enter" || ev.key === " ") && ev.target.classList?.contains("rev-card")){ ev.preventDefault(); ev.target.click(); }
