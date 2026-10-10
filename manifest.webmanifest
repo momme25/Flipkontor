@@ -1,13 +1,14 @@
 {
   "name": "Flipkontor",
   "short_name": "Flipkontor",
-  "start_url": "./",
+  "start_url": "app.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#F6F7F9",
-  "theme_color": "#4F46E5",
+  "background_color": "#F4F6F6",
+  "theme_color": "#007782",
   "lang": "de",
   "icons": [
     {"src": "icon-180.png", "sizes": "180x180", "type": "image/png"},
-    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
   ]
 }

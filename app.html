@@ -246,6 +246,63 @@ select.more-filter.on{background-color:var(--surface);color:var(--ink);border-co
 .item-steps{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);min-height:44px;padding-top:var(--s15);border-top:1px solid var(--line)}
 .step-info{display:grid;gap:6px;min-width:0;justify-items:start}
 .step-btn{min-height:40px}
+.lots-sec{margin-bottom:var(--s2)}
+#tour{position:fixed;inset:0;z-index:150}
+#tour[hidden]{display:none}
+.tour-spot{position:fixed;border-radius:14px;box-shadow:0 0 0 200vmax var(--scrim);transition:all .25s var(--ease);pointer-events:none}
+.tour-card{position:fixed;background:var(--surface);color:var(--ink);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);padding:18px 18px 14px;display:grid;gap:8px;transition:top .25s var(--ease),left .25s var(--ease);outline:none}
+.tour-card h3{font-size:19px}
+.tour-card p{margin:0;color:var(--muted);line-height:1.5;font-size:15px}
+.tour-b{display:flex;gap:8px;align-items:center;margin-top:6px}
+.tour-b .grow{flex:1}
+html.touring{overflow:hidden}
+@media (prefers-reduced-motion: reduce){.tour-spot,.tour-card{transition:none}}
+.lager-tools{display:flex;gap:var(--s1);align-items:center;flex-wrap:wrap}
+.bundle-chip{background:var(--accent2-soft);color:var(--accent2)}
+.code-row{display:flex;align-items:center;gap:var(--s15);flex-wrap:wrap;margin-bottom:var(--s2)}
+.big-code{white-space:nowrap;border:0;cursor:pointer;background:var(--tag);color:var(--tag-ink);font:700 30px/1 var(--f-mono);letter-spacing:.04em;padding:10px 14px;border-radius:var(--r)}
+.code-hint{flex:1;min-width:110px;white-space:normal}
+#codeview{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;z-index:200;background:var(--bg);color:var(--ink);place-items:center;padding:24px;cursor:pointer}
+#codeview[open]{display:grid}
+#codeview::backdrop{background:var(--bg)}
+.cv-in{display:grid;gap:16px;justify-items:center;text-align:center}
+.cv-code{font:700 clamp(44px,17vw,160px)/1 var(--f-mono);letter-spacing:.02em;white-space:nowrap;background:var(--tag);color:var(--tag-ink);padding:.15em .3em;border-radius:var(--r-lg)}
+.cv-name{font:600 22px/1.3 var(--f-display);max-width:20ch}
+.cv-loc{font-size:18px;color:var(--muted)}
+.cv-hint{font-size:14px;color:var(--muted);margin-top:16px}
+.lot-hint.static{cursor:default}
+.bsel-list{display:grid;gap:6px;max-height:min(42vh,360px);overflow:auto;margin:var(--s15) 0 var(--s2);padding:2px}
+.bsel{display:flex;align-items:center;gap:var(--s15);width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.bsel[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.bsel-box{width:22px;height:22px;flex-shrink:0;border:2px solid var(--line);border-radius:6px;display:grid;place-items:center;background:var(--surface)}
+.bsel[aria-pressed=true] .bsel-box{background:var(--accent);border-color:var(--accent)}
+.bsel[aria-pressed=true] .bsel-box::after{content:"";width:10px;height:5px;border-left:2px solid var(--on-accent);border-bottom:2px solid var(--on-accent);transform:translateY(-1px) rotate(-45deg)}
+.bsel-main{display:grid;min-width:0}
+.bsel-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bplan{display:grid;gap:4px;margin-top:var(--s15);font-size:14px}
+.bplan-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center}
+.bplan-n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.lots{display:grid;gap:var(--s1);margin-bottom:var(--s15)}
+.lot-card{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:var(--s15);align-items:center;width:100%;padding:var(--s15);border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.lot-card:active{transform:scale(.98)}
+.lot-thumb{width:52px;height:52px}
+.lot-main{display:grid;gap:4px;min-width:0}
+.lot-title{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lot-meta,.lot-sub{font-size:13px;color:var(--muted)}
+.lot-pct{font-weight:600;font-size:15px}
+.lot-head{justify-content:space-between}
+.lot-hint{display:flex;gap:var(--s15);align-items:center;width:100%;padding:var(--s15);margin-bottom:var(--s2);border:1px dashed var(--line);border-radius:var(--r);background:var(--accent-soft);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.lot-hint svg{width:22px;height:22px;flex-shrink:0;color:var(--accent-ink)}
+.lot-hint>span{display:grid;gap:2px}
+.lot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:6px;margin:var(--s1) 0 var(--s2)}
+.lot-ph{position:relative;display:block}
+.lot-ph img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r-sm);display:block}
+.lot-ph button{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:2px solid var(--surface);background:var(--ink);color:var(--surface);font-size:15px;line-height:1;display:grid;place-items:center;cursor:pointer;padding:0}
+.lot-ph button::after{content:"";position:absolute;inset:-8px}
+[data-act=save-lot][aria-disabled=true]{opacity:.55}
+.lot-facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:var(--s2) 0;font-size:14px}
+.lot-facts dt{color:var(--muted)}
+.lot-facts dd{margin:0}
 .item-acts{display:flex;align-items:center;gap:var(--s1);flex-shrink:0}
 .copy-btn{width:40px;height:40px;background:var(--sunk);color:var(--ink)}
 .copy-btn svg{width:19px;height:19px}
@@ -910,7 +967,63 @@ const CAT_ICONS = [
   [/accessoire|cap|mütze|schal|gürtel|schmuck/i, '<path d="M4 15a8 8 0 0 1 16 0z"/><path d="M12 15h9"/>'],
 ];
 const TAG_ICON = '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8" r="1.5"/>';
+/* ---------- Bündel: mehrere Teile an denselben Käufer ---------- */
+const bundleOf = it => it?.bundleId ? S.items.filter(i => i.bundleId === it.bundleId) : (it ? [it] : []);
+const orderCount = list => new Set(list.map(i => i.bundleId || i.id)).size;
+/* Betrag in Cent nach Gewichten aufteilen, Rest cent-genau verteilen (größte Reste zuerst) */
+function splitCents(totalCents, weights){
+  const W = weights.reduce((a,w) => a + w, 0), N = weights.length;
+  const raw = weights.map(w => W > 0 ? totalCents * w / W : totalCents / N);
+  const base = raw.map(Math.floor); let rest = totalCents - base.reduce((a,b) => a + b, 0);
+  raw.map((r, i) => [r - Math.floor(r), i]).sort((a,b) => b[0] - a[0] || a[1] - b[1]).forEach(([, i]) => { if (rest > 0){ base[i]++; rest--; } });
+  return base;
+}
+function bundleWeights(list){
+  if (list.every(i => n(i.listPrice) > 0)) return list.map(i => n(i.listPrice));
+  if (list.every(i => n(i.buyPrice) > 0)) return list.map(i => n(i.buyPrice));
+  return list.map(() => 1);
+}
+
+/* ---------- Sortierung im Lager (pro Gerät gespeichert) ---------- */
+const SORTS = [["neu","Neueste zuerst"],["alt","Älteste zuerst"],["teuer","Preis: hoch zuerst"],["billig","Preis: niedrig zuerst"],["liegt","Längste Liegezeit"]];
+let lagerSort = "neu";
+try { const v = localStorage.getItem("fk-sort"); if (SORTS.some(([k]) => k === v)) lagerSort = v; } catch(e){}
+const itemDateKey = i => i.completedAt||i.shippedAt||i.sellDate||i.listedAt||i.buyDate||"";
+const itemPrice = i => SOLD(i.status) ? n(i.sellPrice) : n(i.listPrice);
+const itemAge = i => SOLD(i.status) ? daysBetween(i.buyDate || i.sellDate || today(), i.sellDate || today()) : daysBetween(i.listedAt || i.buyDate || today());
+function sortItems(list){
+  const by = {
+    neu: (a,b) => itemDateKey(b).localeCompare(itemDateKey(a)),
+    alt: (a,b) => itemDateKey(a).localeCompare(itemDateKey(b)),
+    teuer: (a,b) => itemPrice(b) - itemPrice(a) || itemDateKey(b).localeCompare(itemDateKey(a)),
+    billig: (a,b) => itemPrice(a) - itemPrice(b) || itemDateKey(b).localeCompare(itemDateKey(a)),
+    liegt: (a,b) => itemAge(b) - itemAge(a) || itemDateKey(a).localeCompare(itemDateKey(b))
+  }[lagerSort] || ((a,b) => itemDateKey(b).localeCompare(itemDateKey(a)));
+  return list.sort(by);
+}
+
+/* ---------- Posten: mehrere Teile, die zusammen gekauft wurden ---------- */
+const lotsOf = () => Array.isArray(S.settings.lots) ? S.settings.lots : [];
+const lotById = id => id ? lotsOf().find(l => l.id === id) : null;
+function lotStats(l){
+  const its = S.items.filter(i => i.lotId === l.id), sold = its.filter(i => SOLD(i.status));
+  const cost = its.reduce((a,i) => a + n(i.buyPrice), 0);
+  const back = sold.reduce((a,i) => a + itemProfit(i) + n(i.buyPrice), 0);
+  return {count:its.length, sold:sold.length, pct: its.length ? sold.length / its.length : 0, cost, back, recoup: cost ? back / cost : (sold.length ? 1 : 0), profit: back - cost};
+}
+function lotCard(l){
+  const st = lotStats(l), pct = Math.round(st.pct * 100);
+  const sub = st.sold === 0 ? `Noch nichts verkauft · Einkauf <span class="money">${money(st.cost)}</span>`
+    : st.recoup < 1 ? `Einkauf zu ${Math.floor(st.recoup * 100)} % wieder drin`
+    : `Einkauf wieder drin · Gewinn <span class="money pos">+${money(st.profit)}</span>`;
+  return `<button class="lot-card" data-act="open-lot" data-id="${l.id}">${thumbHTML({photo:l.photo, name:l.name}, "thumb lot-thumb")}
+    <span class="lot-main"><span class="lot-title">${esc(l.name)}</span><span class="lot-meta">${st.sold} von ${st.count} verkauft</span>
+      <span class="bar ${pct>=100?"good":""}"><span style="width:${pct}%"></span></span><span class="lot-sub">${sub}</span></span>
+    <span class="lot-pct num">${pct} %</span></button>`;
+}
+
 function thumbHTML(i, cls = "thumb"){
+  if (!i.photo && i.lotId){ const l = lotById(i.lotId); if (l?.photo) return `<img class="${cls}" src="${l.photo}" alt="">`; }
   if (i.photo) return `<img class="${cls}" src="${i.photo}" alt="">`;
   const src = (i.brand || i.name || "?").trim(), parts = src.split(/[\s'’.-]+/).filter(Boolean);
   const ini = (parts.length > 1 ? parts[0][0] + parts[1][0] : src.slice(0, 2)).toUpperCase();
@@ -997,6 +1110,7 @@ function renderDemo(){
   slot.innerHTML = on ? `<details class="pop" id="demo-pop"><summary class="demo-pill">Beispieldaten</summary><div class="pop-b"><span>Du siehst Beispieldaten, damit du alles ausprobieren kannst. Lösch sie, bevor du deine eigenen Artikel einträgst.</span><button class="btn danger sm" data-act="clear-demo">Beispieldaten löschen</button></div></details>` : "";
 }
 function render(){
+  setTimeout(maybeAutoTour, 0);
   renderTabs();
   const sy = $("#sync");
   const label = S.mode==="db" ? "Gespeichert in deinem Konto" : S.mode==="local" ? "Nur in diesem Browser gespeichert" : "Lädt …";
@@ -1062,10 +1176,10 @@ function viewStart(){
   const monthName = new Date().toLocaleDateString("de-DE",{month:"long"});
   const goalPct = g.profit ? Math.max(0, Math.round(m.net / g.profit * 100)) : 0;
 
-  const toShip = S.items.filter(i => i.status==="verkauft").length;
+  const toShip = orderCount(S.items.filter(i => i.status==="verkauft"));
   const stale = stock.filter(isStale).length;
   const offline = S.items.filter(i => i.status==="lager").length;
-  const toClose = S.items.filter(i => i.status==="versendet" && daysBetween(i.shippedAt || i.sellDate || today()) >= 3).length;
+  const toClose = orderCount(S.items.filter(i => i.status==="versendet" && daysBetween(i.shippedAt || i.sellDate || today()) >= 3));
   const cards = [];
   const pl = (k, one, many) => k === 1 ? one : many;
   const todo = (attrs, ic, tone, title, detail, action, actTone = "") => `<button class="todo-card" ${attrs}><span class="todo-ic ${tone}">${icon(ic)}</span><span class="todo-tx"><span class="todo-title">${title}</span><span class="todo-sub">${detail} · <span class="todo-act ${actTone}">${action} ›</span></span></span></button>`;
@@ -1140,23 +1254,36 @@ const MAIN_FILTERS = [["aktiv","Bestand"],["verkauft","Zu versenden"],["versende
 const MORE_FILTERS = [["lager","Im Lager"],["gelistet","Online"],["alle","Alle"]];
 function matchFilter(i, f){ return f==="alle" || (f==="aktiv" ? (i.status==="lager" || i.status==="gelistet") : i.status===f); }
 function viewLager(){
-  const f = S.filter, q = f.q.trim().toLowerCase();
-  let list = S.items.filter(i => matchFilter(i, f.status));
-  if (q) list = list.filter(i => [i.name,i.brand,i.code,i.category,i.size,i.location,i.source,i.supplierName].join(" ").toLowerCase().includes(q));
-  list.sort((a,b) => (b.completedAt||b.shippedAt||b.sellDate||b.listedAt||b.buyDate||"").localeCompare(a.completedAt||a.shippedAt||a.sellDate||a.listedAt||a.buyDate||""));
+  const f = S.filter, q = f.q.trim().toLowerCase(), lot = lotById(f.lot);
+  let list = lot ? S.items.filter(i => i.lotId === lot.id) : S.items.filter(i => matchFilter(i, f.status));
+  if (q) list = list.filter(i => [i.name,i.brand,i.code,i.category,i.size,i.location,i.source,i.supplierName,lotById(i.lotId)?.name].join(" ").toLowerCase().includes(q));
+  const lots = lotsOf().filter(l => lotStats(l).count > 0);
+  sortItems(list);
+  const sellable = S.items.filter(i => i.status === "lager" || i.status === "gelistet").length;
+  const tools = `<div class="lager-tools"><select id="sort" class="more-filter ${lagerSort !== "neu" ? "on" : ""}" aria-label="Sortieren">${SORTS.map(([k,l]) => `<option value="${k}" ${k===lagerSort?"selected":""}>${l}</option>`).join("")}</select>${sellable >= 2 ? `<button class="btn sm" data-act="bundle">Bündel verkaufen</button>` : ""}</div>`;
   const moreOn = MORE_FILTERS.some(([k]) => k===f.status);
+  if (lot) return `<div class="page-head"><h2>Lager</h2><span class="muted small num">${list.length} Artikel</span></div>
+  <div class="stack">
+    <div class="row lot-head"><button class="btn ghost sm" data-act="lot-clear">‹ Alle Artikel</button><button class="btn sm" data-act="edit-lot" data-id="${lot.id}">Posten bearbeiten</button></div>
+    <div class="lots">${lotCard(lot)}</div>
+    ${tools}
+  </div>
+  <div class="items" id="items">${list.map(itemRow).join("")}</div>`;
   return `<div class="page-head"><h2>Lager</h2><span class="muted small num">${list.length} Artikel</span></div>
+  ${lots.length && !q ? `<section class="lots-sec">${fold("lager-lots", "Posten", `<div class="lots">${lots.map(lotCard).join("")}</div><button class="btn ghost sm" data-act="new-lot">Neuer Posten</button>`, {info:`${lots.length}`, open:true})}</section>` : ""}
   <div class="stack">
     <label class="searchbox">${icon("search")}<input id="q" type="search" placeholder="Suchen nach Marke, Nummer, Ort …" value="${esc(f.q)}" aria-label="Lager durchsuchen"></label>
     <div class="filters"><div class="seg seg-scroll">${MAIN_FILTERS.map(([k,l]) => `<button data-filter="${k}" aria-pressed="${f.status===k}">${l}</button>`).join("")}</div>
       <select id="filter-more" class="more-filter ${moreOn?"on":""}" aria-label="Weitere Filter"><option value="" ${moreOn?"":"selected"}>Mehr</option>${MORE_FILTERS.map(([k,l])=>`<option value="${k}" ${f.status===k?"selected":""}>${l}</option>`).join("")}</select></div>
+    ${tools}
   </div>
   <div class="items" id="items">${list.length ? list.map(itemRow).join("") : `<div class="panel empty" style="padding:32px 16px"><span class="empty-ic">${icon("search")}</span><p class="muted">Keine Artikel in dieser Ansicht</p><button class="btn" data-act="reset-filter">Filter zurücksetzen</button></div>`}</div>`;
 }
 function itemRow(i){
   const sold = SOLD(i.status), p = itemProfit(i), stale = isStale(i);
   const days = daysBetween(i.listedAt||i.buyDate);
-  const extra = stale ? `<span class="chip stale">${days} Tage</span>` : i.status==="verkauft" ? `<span class="chip st-verkauft">Verkauft</span>` : i.size ? `<span>${esc(i.size)}</span>` : "";
+  const extra = (stale ? `<span class="chip stale">${days} Tage</span>` : i.status==="verkauft" ? `<span class="chip st-verkauft">Verkauft</span>` : i.size ? `<span>${esc(i.size)}</span>` : "")
+    + (i.bundleId ? `<span class="chip bundle-chip">Bündel · ${bundleOf(i).length}</span>` : "");
   return `<div class="item" id="item-${i.id}">
     <button class="item-top" data-act="edit" data-id="${i.id}">
       ${thumbHTML(i)}
@@ -1217,7 +1344,8 @@ function viewVinted(){
   const avgOf = a => a.length ? fmt1(a.reduce((x,y)=>x+y,0)/a.length) + " Tage" : "–";
   const dist = [5,4,3,2,1].map(k => [k, reviews.filter(i=>i.review.stars===k).length]);
   const maxD = Math.max(1, ...dist.map(d=>d[1]));
-  const open = closed.filter(i => !i.review || !i.review.stars).sort((a,b)=>(b.completedAt||"").localeCompare(a.completedAt||""));
+  const bundleDone = i => i.bundleId && (bundleOf(i).some(x => x.review?.stars) || !i.bundleLead);
+  const open = closed.filter(i => (!i.review || !i.review.stars) && !bundleDone(i)).sort((a,b)=>(b.completedAt||"").localeCompare(a.completedAt||""));
   const openRow = i => `<li><span class="row" style="gap:12px;min-width:0;flex-wrap:nowrap">${thumbHTML(i, "thumb sm")}<span class="grow"><span class="item-title" style="font-size:15px">${esc(i.name)}</span><span class="muted small">abgeschlossen ${fmtDate(i.completedAt)}</span></span></span><button class="btn sm" data-act="review" data-id="${i.id}">Bewertung eintragen</button></li>`;
   const revCard = i => { const r = i.review, long = (r.text||"").length > 140;
     return `<div class="rev-card" id="rev-${i.id}" data-act="edit" data-id="${i.id}" role="button" tabindex="0">
@@ -1364,6 +1492,7 @@ function viewSetup(){
     ${fold("set-vinted", "Vinted & Lager", vinted)}
     ${fold("set-listen", "Quellen & Kategorien", lists)}
     ${fold("set-daten", "Daten", data)}
+    ${fold("set-hilfe", "Hilfe", `<p class="small" style="white-space:normal">Die kurze Tour zeigt dir Schritt für Schritt, wo du was findest.</p><div class="row"><button class="btn sm" data-act="tour">Tutorial starten</button></div>`)}
     ${fold("set-gefahr", "Gefahrenzone", `<p class="small">Löscht alle Artikel und Ausgaben. Das lässt sich nicht rückgängig machen.</p><span id="wipe"><button class="btn danger" data-act="wipe">Alles löschen</button></span>`, {cls:"danger"})}
   </div>
   <div class="savebar" id="savebar" ${S.dirty?"":"hidden"}><span>Nicht gespeicherte Änderungen</span><button class="btn primary" data-act="save-settings">Speichern</button></div>`;
@@ -1428,7 +1557,15 @@ function itemDialog(it){
     <div class="fld"><label for="f-revText">Bewertungstext</label><input id="f-revText" value="${esc(e.review?.text)}"></div>
     <div class="fld"><label for="f-revKaeufer">Käufer</label><input id="f-revKaeufer" value="${esc(e.review?.buyer)}"></div>
     ${e.review ? `<div class="row"><button type="button" class="btn ghost sm danger" data-act="dlg-review-clear">Bewertung löschen</button></div>` : ""}`;
-  openDlg(`${isNew?"Neuer Artikel":"Artikel"} <span class="code">${esc(e.code)}</span>`, `
+  const inLot = lotById(e.lotId);
+  const inBundle = e.bundleId ? bundleOf(e) : null;
+  openDlg(isNew ? "Neuer Artikel" : "Artikel", `
+  <div class="code-row"><button type="button" class="big-code" data-act="show-code" data-code="${esc(e.code)}" data-name="${esc(e.name||"")}" data-loc="${esc(e.location||"")}" aria-label="Artikelnummer ${esc(e.code)} groß anzeigen">${esc(e.code)}</button>
+    <span class="code-hint muted small">${isNew ? "Neue Nummer · zum Vergrößern tippen" : "Zum Vergrößern tippen"}</span>
+    ${isNew ? "" : `<button type="button" class="btn sm" data-act="dup-item" data-id="${e.id}">Duplizieren</button>`}</div>
+  ${inBundle && inBundle.length > 1 ? `<div class="lot-hint static">${icon("box")}<span><b>Teil eines Bündels mit ${inBundle.length} Artikeln</b><span class="muted small">Zusammen verkauft für ${money(inBundle.reduce((a,x)=>a+n(x.sellPrice),0))}. Versenden und Abschließen gilt für alle.</span></span></div>` : ""}
+  ${isNew ? `<button type="button" class="lot-hint" data-act="new-lot">${icon("box")}<span><b>Mehrere Teile auf einmal gekauft?</b><span class="muted small">Als Posten anlegen, Preis wird automatisch aufgeteilt</span></span></button>` : ""}
+  ${inLot ? `<button type="button" class="lot-hint" data-act="open-lot" data-id="${inLot.id}">${icon("box")}<span><b>Teil von „${esc(inLot.name)}“</b><span class="muted small">${lotStats(inLot).sold} von ${lotStats(inLot).count} verkauft · Posten ansehen</span></span></button>` : ""}
   <div class="photo"><label class="photo-pick" for="f-photo"><span class="ph" id="ph-box">${e.photo ? `<img src="${e.photo}" alt="">` : icon("camera")}</span><span><b id="ph-label">${e.photo ? "Foto ändern" : "Foto hinzufügen"}</b><span class="muted small">Wird automatisch verkleinert</span></span></label><input id="f-photo" class="sr-only" type="file" accept="image/*"><span id="ph-rm">${e.photo ? `<button type="button" class="btn ghost sm danger" data-act="photo-remove">Entfernen</button>` : ""}</span></div>
   <div class="form">
     <div class="fld full"><label for="f-bez">Bezeichnung</label><input id="f-bez" required value="${esc(e.name)}" placeholder="z. B. Carhartt Detroit Jacke"></div>
@@ -1450,6 +1587,233 @@ function itemDialog(it){
   itemCalc();
   sampleReady.then(s => { const b = $("#ai-btn"); if (s && b) b.hidden = false; });
 }
+let bundleSel = null;
+function bundleDialog(preId){
+  const cand = sortItems(S.items.filter(i => i.status === "lager" || i.status === "gelistet"));
+  bundleSel = new Set(preId && cand.some(i => i.id === preId) ? [preId] : []);
+  openDlg("Bündel verkaufen", `
+    <p class="muted small" style="white-space:normal;margin:0">Wähle die Artikel, die zusammen an einen Käufer gehen. Der Gesamtpreis wird passend zu den Angebotspreisen aufgeteilt.</p>
+    <div class="bsel-list" id="bsel-list">${cand.map(i => `<button type="button" class="bsel" data-act="bundle-pick" data-id="${i.id}" aria-pressed="${bundleSel.has(i.id)}">
+      <span class="bsel-box" aria-hidden="true"></span>${thumbHTML(i, "thumb sm")}<span class="bsel-main"><span class="bsel-name">${esc(i.name)}</span><span class="muted small"><span class="code">${esc(i.code)}</span> ${n(i.listPrice) ? money(i.listPrice) : "ohne Preis"}</span></span></button>`).join("")}</div>
+    <div class="form">
+      <div class="fld"><label for="b-price">Gesamtpreis (€)</label><input id="b-price" inputmode="decimal" value=""></div>
+      <div class="fld"><label for="b-ship">Versand, den du zahlst (€)</label><input id="b-ship" inputmode="decimal" value="0"></div>
+      <div class="fld"><label for="b-date">Verkauft am</label><input id="b-date" type="date" value="${today()}"></div>
+    </div>
+    <div id="bundle-plan"></div>`,
+    `<div class="profit-line" id="bundle-sum"></div><button type="button" class="btn primary" data-act="confirm-bundle">Bündel verkaufen</button>`);
+  bundleCalc();
+}
+function bundlePlan(){
+  const list = S.items.filter(i => bundleSel?.has(i.id));
+  const price = Math.round(n($("#b-price")?.value) * 100), ship = Math.round(n($("#b-ship")?.value) * 100);
+  const w = bundleWeights(list), ps = splitCents(price, w), ss = splitCents(ship, w);
+  const feeFix = n(S.settings.feeFix), date = $("#b-date")?.value || today();
+  return list.map((it, k) => {
+    const e = {...it, status:"verkauft", sellPrice: ps[k] / 100, shipCost: ss[k] / 100, sellDate: date};
+    if (feeFix) e.fee = Math.round((ps[k] / 100 * S.settings.feePct / 100 + (k === 0 ? feeFix : 0)) * 100) / 100;
+    return e;
+  });
+}
+function bundleCalc(){
+  const box = $("#bundle-plan"), sum = $("#bundle-sum"); if (!box || !bundleSel) return;
+  const plan = bundlePlan(), price = n($("#b-price")?.value);
+  if (plan.length < 2){ box.innerHTML = ""; sum.innerHTML = `<span class="muted small">Wähle mindestens 2 Artikel.</span>`; return; }
+  box.innerHTML = price ? `<div class="bplan">${plan.map(e => { const p = itemProfit(e); return `<div class="bplan-row"><span class="bplan-n">${esc(e.name)}</span><span class="money">${money(e.sellPrice)}</span><span class="money ${p>=0?"pos":"neg"}">${p>=0?"+":"−"}${money(Math.abs(p))}</span></div>`; }).join("")}</div>` : "";
+  const total = plan.reduce((a,e) => a + itemProfit(e), 0);
+  sum.innerHTML = price ? `<span>${plan.length} Artikel · Gewinn <b class="money ${total>=0?"pos":"neg"}">${money(total)}</b></span>` : `<span class="muted small">${plan.length} Artikel ausgewählt. Gesamtpreis eintragen.</span>`;
+}
+async function confirmBundle(){
+  const plan = bundlePlan();
+  if (plan.length < 2){ toast("Wähle mindestens 2 Artikel."); return; }
+  if (!n($("#b-price")?.value)){ $("#b-price").setAttribute("aria-invalid","true"); focusField($("#b-price")); toast("Bitte den Gesamtpreis eintragen."); return; }
+  const bid = uid("b"), total = plan.reduce((a,e) => a + itemProfit(e), 0);
+  closeDlg();
+  await applyMany(plan.map((e, k) => { const it = S.items.find(i => i.id === e.id); const ch = {status:"verkauft", sellPrice:e.sellPrice, shipCost:e.shipCost, sellDate:e.sellDate, bundleId:bid, bundleLead: k === 0 ? true : undefined};
+    if ("fee" in e) ch.fee = e.fee; ch.alloc = allocate({...it, ...ch}); return [it, ch]; }), `Bündel verkauft · ${money(total)} Gewinn`);
+}
+
+/* ---------- Artikel duplizieren ---------- */
+async function duplicateItem(it){
+  if (dlgDirty){ toast("Bitte zuerst speichern, dann duplizieren."); return; }
+  const copy = JSON.parse(JSON.stringify(it));
+  ["sellPrice","sellDate","shippedAt","completedAt","review","alloc","bundleId","bundleLead","fee","listedAt","lotId","listing"].forEach(k => delete copy[k]);
+  Object.assign(copy, {id:uid("i"), code:"A-"+String((S.settings.seq||0)+1).padStart(4,"0"), status:"lager", createdAt:today(), buyDate: it.buyDate || today()});
+  if (copy.sellPrice === undefined) copy.sellPrice = "";
+  closeDlg(true);
+  S.settings.seq = (S.settings.seq||0) + 1; await safe(store.saveSettings());
+  await safe(store.put("items", copy), `Kopie angelegt (${copy.code})`);
+  itemDialog(S.items.find(i => i.id === copy.id) || copy);
+}
+
+/* ---------- Tutorial: Schritt für Schritt durch die App ---------- */
+const TOUR = [
+  {title:"Willkommen bei Flipkontor", text:"In einer Minute zeige ich dir das Wichtigste. Du kannst jederzeit überspringen."},
+  {tab:"start", sel:".hero", title:"Dein Monat", text:"Hier siehst du deinen Gewinn in diesem Monat und wie nah du an deinem Ziel bist."},
+  {tab:"start", sel:".todo", title:"Zu tun", text:"Hier steht, was heute dran ist: Pakete versenden, Bestellungen abschließen, Preise senken. Tipp auf eine Karte, um loszulegen."},
+  {tab:"start", sel:"#fab", title:"Artikel anlegen", text:"Mit „+ Artikel“ trägst du ein neues Teil ein. Mehrere Teile auf einmal, zum Beispiel eine Kiste vom Flohmarkt, legst du dort als Posten an."},
+  {tab:"lager", sel:"#items .item", when: () => tourActive(), title:"Dein Lager", text:"Jeder Artikel hat eine Nummer und durchläuft die Schritte Im Lager, Online, Verkauft, Versendet und Abgeschlossen."},
+  {tab:"lager", sel:"#items .step-btn", when: () => tourActive(), title:"Ein Tipp weiter", text:"Mit diesem Knopf bringst du den Artikel zum nächsten Schritt. Beim Verkauf trägst du nur den Preis ein."},
+  {tab:"lager", sel:"#items .copy-btn", when: () => tourActive(), title:"Text für Vinted", text:"Kopiert den Listing-Text für Vinted. Fehlt er noch, wird er automatisch erzeugt."},
+  {tab:"lager", sel:".lager-tools", title:"Sortieren und Bündel", text:"Sortiere nach Datum, Preis oder Liegezeit. Kauft jemand mehrere Teile zusammen, verkaufst du sie hier als Bündel."},
+  {tab:"geld", sel:".pots", title:"Deine Geldtöpfe", text:"Jeder Verkauf wird automatisch aufgeteilt: Geld zum Wiedereinkaufen, Rücklage und Gewinn für dich."},
+  {tab:"start", sel:'.iconbtn[data-tab="setup"]', title:"Einstellungen", text:"Hier stellst du Töpfe und Ziele ein, machst ein Backup und startest dieses Tutorial jederzeit neu."},
+  {tab:"start", sel:".demo-pill", when: () => !!S.settings.demo, title:"Beispieldaten", text:"Gerade siehst du Beispieldaten. Wenn du loslegen willst, tipp hier und lösche sie."},
+  {title:"Fertig!", text:"Viel Erfolg beim Flippen. Das Tutorial findest du jederzeit in den Einstellungen unter „Hilfe“."}
+];
+let tourI = -1, tourSteps = [];
+const tourActive = () => S.items.some(i => i.status === "lager" || i.status === "gelistet");
+const tourSeen = () => { try { return !!localStorage.getItem("fk-tour"); } catch(e){ return true; } };
+function startTour(force){
+  if (!force && tourSeen()) return;
+  if (dlg.open) closeDlg(true);
+  try { localStorage.setItem("fk-tour", "1"); } catch(e){}
+  tourSteps = TOUR.filter(st => !st.when || st.when()); tourI = 0;
+  let el = $("#tour");
+  if (!el){
+    el = document.createElement("div"); el.id = "tour"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-live", "polite");
+    el.innerHTML = `<div class="tour-spot" aria-hidden="true"></div><div class="tour-card" tabindex="-1"></div>`;
+    document.body.append(el);
+    el.addEventListener("click", ev => { const b = ev.target.closest("[data-tour]"); if (!b) return; ev.stopPropagation();
+      const a = b.dataset.tour; if (a === "next") tourGo(tourI + 1); if (a === "back") tourGo(tourI - 1, -1); if (a === "skip") endTour(); });
+    addEventListener("resize", () => { if (tourI >= 0) tourPlace(); });
+    addEventListener("keydown", ev => { if (tourI < 0) return; if (ev.key === "Escape") endTour(); if (ev.key === "ArrowRight") tourGo(tourI + 1); if (ev.key === "ArrowLeft") tourGo(tourI - 1, -1); });
+  }
+  el.hidden = false; document.documentElement.classList.add("touring");
+  tourGo(0);
+}
+function endTour(){ tourI = -1; const el = $("#tour"); if (el) el.hidden = true; document.documentElement.classList.remove("touring"); }
+function tourGo(i, dir = 1){
+  if (i < 0) return;
+  if (i >= tourSteps.length){ endTour(); return; }
+  const st = tourSteps[i];
+  if (st.tab && st.tab !== S.tab){ setTab(st.tab); if (st.tab === "lager") S.filter = {status:"aktiv", q:""}; render(); window.scrollTo(0, 0); }
+  if (st.sel && !document.querySelector(st.sel)){ tourGo(i + dir, dir); return; }
+  tourI = i;
+  const t = st.sel && document.querySelector(st.sel);
+  if (t){ const r = t.getBoundingClientRect(); if (r.top < 70 || r.bottom > innerHeight - 160) window.scrollTo(0, Math.max(0, scrollY + r.top - innerHeight * 0.3)); }
+  const shown = tourSteps.length, pos = i + 1;
+  const last = i === tourSteps.length - 1;
+  $("#tour .tour-card").innerHTML = `<span class="tour-n muted small num">${pos} von ${shown}</span><h3>${esc(st.title)}</h3><p>${esc(st.text)}</p>
+    <div class="tour-b">${last ? "" : `<button type="button" class="btn ghost sm" data-tour="skip">Überspringen</button>`}<span class="grow"></span>${i > 0 ? `<button type="button" class="btn sm" data-tour="back">Zurück</button>` : ""}<button type="button" class="btn primary sm" data-tour="next">${last ? "Los geht's" : "Weiter"}</button></div>`;
+  requestAnimationFrame(tourPlace);
+  $("#tour .tour-card").focus({preventScroll:true});
+}
+function tourPlace(){
+  const st = tourSteps[tourI]; if (!st) return;
+  const spot = $("#tour .tour-spot"), card = $("#tour .tour-card"), t = st.sel && document.querySelector(st.sel);
+  const W = innerWidth, H = innerHeight, cw = Math.min(360, W - 32);
+  card.style.width = cw + "px";
+  if (!t){ spot.style.cssText = "left:50%;top:50%;width:0;height:0"; card.style.left = (W - cw) / 2 + "px"; card.style.top = Math.max(16, (H - card.offsetHeight) / 2) + "px"; return; }
+  const r = t.getBoundingClientRect(), pad = 6;
+  spot.style.cssText = `left:${r.left - pad}px;top:${r.top - pad}px;width:${r.width + pad * 2}px;height:${r.height + pad * 2}px`;
+  const ch = card.offsetHeight, below = r.bottom + pad + 12, above = r.top - pad - 12 - ch;
+  const top = below + ch <= H - 12 ? below : above >= 12 ? above : Math.max(12, H - ch - 12);
+  card.style.top = top + "px";
+  card.style.left = Math.min(W - cw - 16, Math.max(16, r.left + r.width / 2 - cw / 2)) + "px";
+}
+addEventListener("scroll", () => { if (tourI >= 0) tourPlace(); }, {passive:true});
+/* Neue Nutzer (mit Beispieldaten) bekommen die Tour beim ersten Öffnen automatisch */
+function maybeAutoTour(){
+  if (maybeAutoTour.done || !S.ready || !S.settings.demo || tourSeen()) return;
+  const gate = document.querySelector(".fk-gate");
+  if ((gate && !gate.hidden) || dlg.open) return;
+  maybeAutoTour.done = true;
+  setTimeout(() => { if (!tourSeen() && !(document.querySelector(".fk-gate") && !document.querySelector(".fk-gate").hidden)) startTour(); }, 600);
+}
+
+/* ---------- Artikelnummer groß ---------- */
+function showCode(code, name, loc){
+  let v = $("#codeview");
+  if (!v){ v = document.createElement("dialog"); v.id = "codeview"; v.setAttribute("aria-label", "Artikelnummer"); document.body.append(v);
+    v.addEventListener("click", () => v.close()); }
+  v.innerHTML = `<div class="cv-in"><span class="cv-code">${esc(code)}</span>${name ? `<span class="cv-name">${esc(name)}</span>` : ""}${loc ? `<span class="cv-loc">Lagerort: ${esc(loc)}</span>` : ""}<span class="cv-hint">Tippen zum Schließen</span></div>`;
+  if (!v.open) v.showModal();
+}
+
+let lotDraft = null;
+function lotDialog(lot){
+  const isNew = !lot;
+  lotDraft = isNew ? {photos:[], autoCount:true} : {id:lot.id, photo:lot.photo || ""};
+  if (isNew){
+    openDlg("Neuer Posten", `
+    <p class="muted small" style="white-space:normal;margin:0">Für alles, was du zusammen gekauft hast, zum Beispiel eine Kiste vom Flohmarkt. Flipkontor legt für jedes Teil einen Artikel an und teilt den Preis auf.</p>
+    <div class="photo"><label class="photo-pick" for="l-photos"><span class="ph">${icon("camera")}</span><span><b id="lph-label">Fotos hinzufügen</b><span class="muted small">Optional, ein Foto pro Teil</span></span></label><input id="l-photos" class="sr-only" type="file" accept="image/*" multiple></div>
+    <div class="lot-grid" id="lph-grid" hidden></div>
+    <div class="form">
+      <div class="fld full"><label for="l-name">Name des Postens</label><input id="l-name" required placeholder="z. B. Flohmarkt-Kiste Jacken"></div>
+      <div class="fld"><label for="l-count">Anzahl Teile</label><input id="l-count" inputmode="numeric" value="" placeholder="z. B. 12"></div>
+      <div class="fld"><label for="l-total">Gesamtpreis (€)</label><input id="l-total" inputmode="decimal" value=""></div>
+      <div class="fld"><label for="l-list">Angebotspreis pro Teil (€)</label><input id="l-list" inputmode="decimal" value="" placeholder="optional"></div>
+      <div class="fld"><label for="l-source">Quelle</label><select id="l-source">${opts(S.settings.sources, S.settings.sources.includes("Flohmarkt") ? "Flohmarkt" : S.settings.sources[0])}</select></div>
+      <div class="fld"><label for="l-category">Kategorie</label><select id="l-category">${opts(S.settings.categories, S.settings.categories[0])}</select></div>
+      <div class="fld"><label for="l-date">Gekauft am</label><input id="l-date" type="date" value="${today()}"></div>
+    </div>`,
+    `<div class="profit-line" id="lot-calc"><span class="muted small">Anzahl und Gesamtpreis eintragen.</span></div>
+     <button type="button" class="btn primary" data-act="save-lot">Artikel anlegen</button>`);
+  } else {
+    const st = lotStats(lot);
+    openDlg("Posten", `
+    <div class="photo"><label class="photo-pick" for="l-photo"><span class="ph" id="lph-box">${lot.photo ? `<img src="${lot.photo}" alt="">` : icon("camera")}</span><span><b id="lph-label">${lot.photo ? "Foto ändern" : "Foto hinzufügen"}</b><span class="muted small">Für Teile ohne eigenes Foto</span></span></label><input id="l-photo" class="sr-only" type="file" accept="image/*"></div>
+    <div class="form"><div class="fld full"><label for="l-name">Name des Postens</label><input id="l-name" required value="${esc(lot.name)}"></div></div>
+    <dl class="lot-facts"><dt>Gekauft am</dt><dd>${esc(fmtDate(lot.date))}</dd><dt>Quelle</dt><dd>${esc(lot.source||"–")}</dd>
+      <dt>Teile</dt><dd>${st.count} (${st.sold} verkauft)</dd><dt>Einkauf</dt><dd class="money">${money(st.cost)}</dd>
+      <dt>Wieder drin</dt><dd class="money">${money(st.back)}</dd></dl>
+    <p class="muted small" style="white-space:normal">Einkaufspreise und Verkäufe änderst du bei den einzelnen Artikeln.</p>`,
+    `<span id="lot-del" style="margin-right:auto"><button type="button" class="btn ghost danger" data-act="del-lot">Posten auflösen</button></span>
+     <button type="button" class="btn primary" data-act="save-lot">Speichern</button>`);
+  }
+}
+/* Fotovorschau im neuen Posten; die Anzahl folgt den Fotos, solange sie nicht von Hand geändert wurde */
+function renderLotPhotos(before){
+  const g = $("#lph-grid"), lab = $("#lph-label"), c = $("#l-count"); if (!g || !lotDraft) return;
+  const ph = lotDraft.photos;
+  g.hidden = !ph.length;
+  g.innerHTML = ph.map((src, k) => `<span class="lot-ph"><img src="${src}" alt="Foto ${k + 1}"><button type="button" data-act="lot-ph-rm" data-i="${k}" aria-label="Foto ${k + 1} entfernen">×</button></span>`).join("");
+  if (lab && !lotDraft.busy) lab.textContent = ph.length ? `${ph.length} ${ph.length === 1 ? "Foto" : "Fotos"} · weitere hinzufügen` : "Fotos hinzufügen";
+  if (c && (lotDraft.autoCount || !c.value.trim() || Number(c.value) === before)){ c.value = ph.length || ""; lotDraft.autoCount = true; c.removeAttribute("aria-invalid"); }
+  lotCalc();
+}
+function lotPlan(){
+  const N = Math.round(n($("#l-count")?.value)), total = n($("#l-total")?.value);
+  return {N, total, cents: Math.round(total * 100)};
+}
+function lotCalc(){
+  const box = $("#lot-calc"); if (!box) return;
+  const {N, total} = lotPlan();
+  box.innerHTML = N > 0 && N <= 200 ? `<span>${N} Artikel · je ca. <b class="money">${money(total / N)}</b> Einkauf</span>`
+    : N > 200 ? `<span class="muted small">Höchstens 200 Teile pro Posten.</span>` : `<span class="muted small">Anzahl und Gesamtpreis eintragen.</span>`;
+}
+async function saveLot(){
+  if (lotDraft?.busy){ toast("Einen Moment, die Fotos werden noch verkleinert."); return; }
+  const name = ($("#l-name")?.value || "").trim();
+  if (!name){ $("#l-name").setAttribute("aria-invalid","true"); focusField($("#l-name")); toast("Bitte einen Namen eintragen."); return; }
+  if (lotDraft.id){
+    const l = lotById(lotDraft.id); if (!l) return;
+    l.name = name; l.photo = lotDraft.photo || "";
+    closeDlg(); await safe(store.saveSettings(), "Posten gespeichert"); return;
+  }
+  const {N, cents} = lotPlan();
+  if (!(N >= 1 && N <= 200)){ $("#l-count").setAttribute("aria-invalid","true"); focusField($("#l-count")); toast("Bitte eine Anzahl von 1 bis 200 eintragen."); return; }
+  const listRaw = ($("#l-list")?.value || "").trim(), date = $("#l-date")?.value || today();
+  const source = $("#l-source")?.value || S.settings.sources[0], category = $("#l-category")?.value || S.settings.categories[0];
+  const lot = {id:uid("l"), name, date, source, total: cents / 100, count:N, photo: lotDraft.photos[0] || "", createdAt: today()};
+  const base = Math.floor(cents / N), rest = cents - base * N, seq = S.settings.seq || 0;
+  const items = Array.from({length:N}, (_, k) => ({
+    id:uid("i"), code:"A-"+String(seq + k + 1).padStart(4,"0"), name:`${name} ${k + 1}`, lotId:lot.id,
+    status:"lager", buyDate:date, condition:"Sehr gut", category, source, shipCost:0, photo: lotDraft.photos[k] || "",
+    createdAt:today(), buyPrice:(base + (k < rest ? 1 : 0)) / 100, listPrice: listRaw === "" ? "" : n(listRaw)
+  }));
+  closeDlg();
+  S.settings.lots = [...lotsOf(), lot]; S.settings.seq = seq + N;
+  await safe(store.saveSettings());
+  let ok = 0;
+  try { for (const it of items){ await store.put("items", it); ok++; } }
+  catch(e){ toast(ok ? `Nur ${ok} von ${N} Artikeln gespeichert` : "Speichern fehlgeschlagen"); }
+  if (ok === N) toast(`${N} Artikel angelegt`, null, true);
+  setTab("lager"); S.filter = {status:"alle", q:"", lot:lot.id}; window.scrollTo(0,0); render();
+}
+
 function readItemForm(){
   const FID = {name:"bez", supplierName:"lieferant"}, fid = k => "#f-" + (FID[k] || k);
   const e = editing, v = id => $(fid(id))?.value ?? "";
@@ -1538,7 +1902,8 @@ function sellDialog(it){
     <div class="fld"><label for="s-price">Verkaufspreis (€)</label><input id="s-price" inputmode="decimal" value="${n(it.listPrice)||""}"></div>
     <div class="fld"><label for="s-date">Datum</label><input id="s-date" type="date" value="${today()}"></div>
     <div class="fld full"><label for="s-ship">Versand, den du zahlst (€)</label><input id="s-ship" inputmode="decimal" value="${n(it.shipCost)||0}"></div></div>
-    <p id="sell-profit"></p>`,
+    <p id="sell-profit"></p>
+    ${S.items.filter(i => (i.status==="lager"||i.status==="gelistet") && i.id !== it.id).length ? `<button type="button" class="linkbtn" data-act="bundle" data-id="${it.id}">Mehrere Teile an denselben Käufer? Als Bündel verkaufen</button>` : ""}`,
     `<button type="button" class="btn primary" data-act="confirm-sell" data-id="${it.id}">Verkauf buchen</button>`, true);
   sellProfit();
   setTimeout(() => focusField($("#s-price")), 80);
@@ -1598,6 +1963,15 @@ function confirmInline(wrapSel, label, run, yes = "Ja, löschen"){
 function setTab(t){ S.tab = t; try{localStorage.setItem("fk-tab",S.tab);}catch(e){} }
 function markDirty(){ S.dirty = true; const b = $("#savebar"); if (b) b.hidden = false; }
 
+/* Mehrere Artikel auf einmal ändern (Bündel), mit einem Rückgängig für alle */
+async function applyMany(pairs, msg){
+  if (!pairs.length) return;
+  const prevs = pairs.map(([it]) => JSON.parse(JSON.stringify(S.items.find(i => i.id === it.id) || it)));
+  const nexts = pairs.map(([it, ch]) => { const nx = {...JSON.parse(JSON.stringify(it)), ...ch}; for (const k in ch) if (ch[k] === undefined) delete nx[k]; return nx; });
+  toast(msg, () => safe((async () => { for (const pv of prevs) await store.put("items", pv); })(), "Rückgängig gemacht"), true);
+  try { for (const nx of nexts) await store.put("items", nx); }
+  catch(e){ await safe(Promise.reject(e)); }
+}
 /* Ein Schritt in der Checkliste: speichern, Toast mit Rückgängig (stellt den vorherigen Stand samt Zeitstempeln wieder her) */
 async function applyStep(id, base, changes, msg){
   const prev = JSON.parse(JSON.stringify(S.items.find(i => i.id === id) || base));
@@ -1616,7 +1990,9 @@ function stepFor(it){
       else return applyStep(it.id, it, {status:"gelistet", listedAt:today()}, "Online gestellt");
       break;
     case "gelistet": sellDialog(it); break;
-    case "verkauft": return applyStep(it.id, it, {status:"versendet", shippedAt:today()}, "Versendet"); break;
+    case "verkauft":
+      if (it.bundleId && bundleOf(it).length > 1) return applyMany(bundleOf(it).filter(i => i.status === "verkauft").map(i => [i, {status:"versendet", shippedAt:today()}]), "Bündel versendet");
+      return applyStep(it.id, it, {status:"versendet", shippedAt:today()}, "Versendet"); break;
     case "versendet": reviewSheet(it, true); break;
     case "abgeschlossen": if (!it.review) reviewSheet(it, false); break;
   }
@@ -1626,7 +2002,7 @@ function stepBack(it){
   const to = STEPS[idx-1];
   const ch = {status:to};
   if (it.status === "gelistet") ch.listedAt = undefined;
-  if (it.status === "verkauft"){ ch.alloc = undefined; ch.sellDate = undefined; ch.sellPrice = undefined; }
+  if (it.status === "verkauft"){ ch.alloc = undefined; ch.sellDate = undefined; ch.sellPrice = undefined; ch.bundleId = undefined; ch.bundleLead = undefined; ch.fee = undefined; }
   if (it.status === "versendet") ch.shippedAt = undefined;
   if (it.status === "abgeschlossen") ch.completedAt = undefined;
   closeDlg();
@@ -1634,7 +2010,7 @@ function stepBack(it){
 }
 function paintStars(sel, val, act){ const w = $(sel); if (w) w.innerHTML = starPicker(val, act); }
 
-const NO_LOCK = new Set(["close","toggle-alloc","more-text","dlg-star","sheet-star","discard-no","undo","copy-listing","gen-listing","copy-text"]);
+const NO_LOCK = new Set(["bundle","bundle-pick","show-code","tour","lot-ph-rm","new-lot","open-lot","lot-clear","edit-lot","close","toggle-alloc","more-text","dlg-star","sheet-star","discard-no","undo","copy-listing","gen-listing","copy-text"]);
 document.addEventListener("click", async ev => {
   const t = ev.target.closest("[data-tab],[data-act],[data-filter],[data-seg]"); if (!t) return;
   if (t.disabled) return;
@@ -1663,6 +2039,21 @@ document.addEventListener("click", async ev => {
     case "reset-filter": S.filter = {status:"aktiv", q:""}; render(); break;
     case "undo": { const u = toastUndo; toastUndo = null; const tt = $(".toast"); if (tt) tt.classList.add("out"); if (u) await u(); break; }
     case "new-item": itemDialog(null); break;
+    case "bundle": if (dlg.open) closeDlg(true); bundleDialog(id || null); break;
+    case "bundle-pick": if (bundleSel){ bundleSel.has(id) ? bundleSel.delete(id) : bundleSel.add(id); t.setAttribute("aria-pressed", bundleSel.has(id)); bundleCalc(); } break;
+    case "confirm-bundle": await confirmBundle(); break;
+    case "dup-item": { const src = S.items.find(i => i.id === id); if (src) await duplicateItem(src); break; }
+    case "show-code": showCode(t.dataset.code, t.dataset.name, t.dataset.loc); break;
+    case "tour": startTour(true); break;
+    case "new-lot": if (dlg.open){ closeDlg(true); } lotDialog(null); break;
+    case "edit-lot": { const l = lotById(id); if (l) lotDialog(l); break; }
+    case "open-lot": if (dlg.open) closeDlg(true); setTab("lager"); S.filter = {status:"alle", q:"", lot:id}; window.scrollTo(0,0); render(); break;
+    case "lot-clear": S.filter = {status:"aktiv", q:""}; render(); break;
+    case "save-lot": await saveLot(); break;
+    case "lot-ph-rm": if (lotDraft && !lotDraft.busy){ const before = lotDraft.photos.length; lotDraft.photos.splice(+t.dataset.i, 1); renderLotPhotos(before); } break;
+    case "del-lot": confirmInline("#lot-del", "Posten auflösen? Die Artikel bleiben erhalten.", async () => {
+      const lid = lotDraft?.id; S.settings.lots = lotsOf().filter(l => l.id !== lid); closeDlg(); S.filter = {status:"aktiv", q:""};
+      await safe(store.saveSettings(), "Posten aufgelöst"); }, "Ja, auflösen"); break;
     case "edit": if (it) itemDialog(it); break;
     case "more-text": { const p = t.previousElementSibling; if (p) p.classList.remove("clamp"); t.remove(); break; }
     case "close": requestClose(); break;
@@ -1689,12 +2080,17 @@ document.addEventListener("click", async ev => {
     case "sheet-star": sheetStars = +t.dataset.v; paintStars("#sheet-stars", sheetStars, "sheet-star"); $("#rev-go").disabled = false; break;
     case "dlg-star": dlgStars = +t.dataset.v; paintStars("#dlg-stars", dlgStars, "dlg-star"); break;
     case "dlg-review-clear": dlgStars = 0; paintStars("#dlg-stars", 0, "dlg-star"); $("#f-revText").value = ""; $("#f-revKaeufer").value = ""; toast("Bewertung wird beim Speichern entfernt"); break;
-    case "complete-plain": { const base = sheetItem; closeDlg(); await applyStep(base.id, base, {status:"abgeschlossen", completedAt:today()}, "Bestellung abgeschlossen"); break; }
+    case "complete-plain": { const base = sheetItem; closeDlg();
+      if (base.bundleId && bundleOf(base).length > 1){ await applyMany(bundleOf(base).filter(i => i.status === "versendet").map(i => [i, {status:"abgeschlossen", completedAt:today()}]), "Bündel abgeschlossen"); break; }
+      await applyStep(base.id, base, {status:"abgeschlossen", completedAt:today()}, "Bestellung abgeschlossen"); break; }
     case "complete-review": {
       if (!sheetStars) break;
       const base = sheetItem, review = {stars:sheetStars, text:$("#r-text").value.trim(), buyer:$("#r-kaeufer").value.trim(), date:today()};
       closeDlg();
-      if (sheetComplete) await applyStep(base.id, base, {status:"abgeschlossen", completedAt:today(), review}, "Bestellung abgeschlossen");
+      if (sheetComplete && base.bundleId && bundleOf(base).length > 1){
+        await applyMany(bundleOf(base).filter(i => i.status === "versendet" || i.id === base.id).map(i => [i, i.id === base.id ? {status:"abgeschlossen", completedAt:today(), review, bundleLead:true} : {status:"abgeschlossen", completedAt:today(), bundleLead:undefined}]), "Bündel abgeschlossen");
+      }
+      else if (sheetComplete) await applyStep(base.id, base, {status:"abgeschlossen", completedAt:today(), review}, "Bestellung abgeschlossen");
       else await applyStep(base.id, base, {review}, "Bewertung gespeichert");
       break; }
     case "ship": if (it) await applyStep(it.id, it, {status:"versendet", shippedAt:today()}, "Versendet"); break;
@@ -1775,15 +2171,39 @@ document.addEventListener("input", ev => {
   if (t.id?.startsWith("c-")) updateCalc();
   if (t.id === "s-price" || t.id === "s-ship") sellProfit();
   if (t.id?.startsWith("f-") && t.type !== "file") itemCalc();
+  if (t.id === "b-price" || t.id === "b-ship") bundleCalc();
+  if (t.id === "l-count" && lotDraft) lotDraft.autoCount = false;
+  if (t.id === "l-count" || t.id === "l-total") lotCalc();
   if (t.closest?.("#setup")) markDirty();
 });
 document.addEventListener("change", async ev => {
   const t = ev.target;
   if (t.id === "filter-more" && t.value){ S.filter.status = t.value; render(); return; }
   if (t.id === "year"){ S.year = +t.value; render(); return; }
+  if (t.id === "sort"){ lagerSort = t.value; try { localStorage.setItem("fk-sort", lagerSort); } catch(e){} render(); return; }
+  if (t.id === "b-date") bundleCalc();
   if (t.id === "f-source"){ const w = $("#sup-wrap"); if (w) w.hidden = t.value !== SUPPLIER; }
   if (t.id === "f-status" && SOLD(t.value) && !$("#f-sellDate").value){ $("#f-sellDate").value = today(); if (!$("#f-sellPrice").value) $("#f-sellPrice").value = $("#f-listPrice").value; const f = $("#fold-dlg-sale"); if (f) f.open = true; itemCalc(); }
   if (t.id === "f-status" && t.value==="gelistet" && !$("#f-listedAt").value){ $("#f-listedAt").value = today(); }
+  if (t.id === "l-photos" && t.files?.length && lotDraft){
+    const files = [...t.files].slice(0, 200 - lotDraft.photos.length); t.value = "";
+    if (!files.length){ toast("Höchstens 200 Fotos pro Posten."); return; }
+    const lab = $("#lph-label"), before = lotDraft.photos.length; let bad = 0;
+    lotDraft.busy = true; $("[data-act=save-lot]")?.setAttribute("aria-disabled", "true");
+    for (let k = 0; k < files.length; k++){
+      if (lab) lab.textContent = `Foto ${k + 1} von ${files.length} wird verkleinert …`;
+      try { lotDraft.photos.push(await shrink(files[k])); } catch(e){ bad++; }
+      renderLotPhotos(before);
+    }
+    lotDraft.busy = false; $("[data-act=save-lot]")?.removeAttribute("aria-disabled");
+    renderLotPhotos(before);
+    if (bad) toast(`${bad} ${bad === 1 ? "Foto konnte" : "Fotos konnten"} nicht gelesen werden. Versuch es mit JPG- oder PNG-Bildern.`);
+    return;
+  }
+  if (t.id === "l-photo" && t.files?.[0] && lotDraft){
+    try { lotDraft.photo = await shrink(t.files[0]); $("#lph-box").innerHTML = `<img src="${lotDraft.photo}" alt="">`; $("#lph-label").textContent = "Foto ändern"; } catch(e){ toast("Dieses Bild konnte nicht gelesen werden."); }
+    return;
+  }
   if (t.id === "f-photo" && t.files?.[0]){
     try { editing.photo = await shrink(t.files[0]); $("#ph-box").innerHTML = `<img src="${editing.photo}" alt="">`; $("#ph-label").textContent = "Foto ändern"; $("#ph-rm").innerHTML = `<button type="button" class="btn ghost sm danger" data-act="photo-remove">Entfernen</button>`; }
     catch(e){ toast("Dieses Bild konnte nicht gelesen werden."); }
@@ -1797,14 +2217,25 @@ function collectSettings(){
   document.querySelectorAll("[data-list]").forEach(i => { const l = i.value.split("\n").map(x=>x.trim()).filter(Boolean); if (l.length) s[i.dataset.list] = l; });
 }
 function shrink(file){
-  return new Promise((res, rej) => {
+  const draw = (img, res) => {
+    const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+    if (!w || !h) throw new Error("leer");
+    const max = 420, k = Math.min(1, max/Math.max(w,h));
+    const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(w*k)); c.height = Math.max(1, Math.round(h*k));
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",0.72));
+  };
+  const viaReader = () => new Promise((res, rej) => {
     const r = new FileReader();
     r.onerror = rej;
-    r.onload = () => { const img = new Image(); img.onerror = rej; img.onload = () => {
-      const max = 420, k = Math.min(1, max/Math.max(img.width,img.height));
-      const c = document.createElement("canvas"); c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
-      c.getContext("2d").drawImage(img,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",0.72)); }; img.src = r.result; };
+    r.onload = () => { const img = new Image(); img.onerror = rej; img.onload = () => { try { draw(img, res); } catch(e){ rej(e); } }; img.src = r.result; };
     r.readAsDataURL(file);
+  });
+  if (!window.URL?.createObjectURL) return viaReader();
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => { try { draw(img, res); } catch(e){ rej(e); } finally { URL.revokeObjectURL(url); } };
+    img.onerror = () => { URL.revokeObjectURL(url); viaReader().then(res, rej); };
+    img.src = url;
   });
 }
 
@@ -2291,6 +2722,7 @@ document.addEventListener("click", async ev => {
   if (act === "backup"){ download(`flipkontor-backup-${today()}.json`, backupJson(), "application/json"); mem.set("backup-at", Date.now()); toast("Backup gespeichert", null, true); if (S.tab === "start") render(); }
   if (act === "backup-later"){ mem.set("backup-snooze", Date.now() + 3 * 864e5); render(); }
   if (act === "news-ok") hideGate();
+  if (act === "news-tour"){ hideGate(); setTimeout(() => startTour(true), 200); }
   if (act === "logout") await logout();
   if (act === "login") showLogin();
   if (act === "plans") showPlans(false);
@@ -2332,6 +2764,11 @@ if (CFG.goatcounter && /^[a-z0-9-]+$/i.test(CFG.goatcounter) && navigator.doNotT
   document.head.append(gc);
 }
 
+/* ---------- Offline-Modus ---------- */
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")){
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
 /* ---------- Kleiner Speicher für Hinweise (nur dieses Gerät) ---------- */
 const mem = {
   get(k){ try { return localStorage.getItem("fk-" + k); } catch(e){ return null; } },
@@ -2358,11 +2795,13 @@ viewStart = function(){
 };
 
 /* ---------- Neu in dieser Version ---------- */
-const APP_VERSION = "1.1";
+const APP_VERSION = "1.3";
 const NEWS = [
-  "Listing-Text direkt im Lager kopieren: Tipp auf das Kopieren-Symbol bei einem Artikel.",
-  "„Ladenhüter“ heißt jetzt „Lange online“.",
-  "Flipkontor erinnert dich ans Backup, damit keine Daten verloren gehen."
+  "Tutorial: Eine kurze Tour zeigt dir, wo du was findest. Du findest sie jederzeit unter Einstellungen → Hilfe.",
+  "Bündel verkaufen: Mehrere Teile an einen Käufer zu einem Gesamtpreis. Der Preis wird automatisch aufgeteilt.",
+  "Offline: Flipkontor startet jetzt auch ohne Internet, zum Beispiel auf dem Flohmarkt.",
+  "Sortieren im Lager nach Datum, Preis oder Liegezeit.",
+  "Artikel duplizieren und die Artikelnummer groß anzeigen: einfach im Artikel auf die Nummer tippen."
 ];
 function maybeNews(tries = 0){
   if (!S.ready || !gate.hidden){ if (tries < 40) setTimeout(() => maybeNews(tries + 1), 500); return; }
@@ -2371,7 +2810,7 @@ function maybeNews(tries = 0){
   const returning = seen || (!S.settings.demo && (S.items.length || S.expenses.length));
   if (seen === APP_VERSION || !returning) return;
   showGate(`${LOGO}<h2>Neu in Flipkontor</h2><ul class="fk-news">${NEWS.map(n => `<li>${escH(n)}</li>`).join("")}</ul>
-    <div class="fk-row"><button class="btn primary" data-fk="news-ok">Alles klar</button></div>`);
+    <div class="fk-row"><button class="btn" data-fk="news-tour">Tutorial ansehen</button><button class="btn primary" data-fk="news-ok">Alles klar</button></div>`);
 }
 setTimeout(maybeNews, 300);
 
