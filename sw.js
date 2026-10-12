@@ -1,26 +1,2 @@
-/* Flipkontor: Offline-Modus.
-   Holt Seiten wenn möglich frisch aus dem Netz (damit Updates sofort ankommen)
-   und legt sie dabei im Zwischenspeicher ab. Ohne Netz kommt die gespeicherte Fassung. */
-const CACHE = "flipkontor-v2";
-const START = ["./", "index.html", "app.html", "app/", "impressum.html", "datenschutz.html", "nutzungsbedingungen.html", "manifest.webmanifest", "icon-180.png", "icon-512.png"];
-const TIMEOUT = 4000; // langsames Netz (Flohmarkt): nach 4 s die gespeicherte Fassung zeigen
-
-self.addEventListener("install", ev => {
-  ev.waitUntil(caches.open(CACHE).then(c => Promise.all(START.map(u => c.add(u).catch(() => null)))).then(() => self.skipWaiting()));
-});
-self.addEventListener("activate", ev => {
-  ev.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-});
-self.addEventListener("fetch", ev => {
-  const req = ev.request, url = new URL(req.url);
-  if (req.method !== "GET" || url.origin !== location.origin) return; // fremde Adressen (z. B. Zähler) nicht anfassen
-  ev.respondWith((async () => {
-    const cache = await caches.open(CACHE);
-    // immer beim Server nachfragen (nicht den Browser-Zwischenspeicher nehmen), damit Updates sofort ankommen
-    const net = fetch(req.url, {cache: "no-cache", credentials: "same-origin"}).then(res => { if (res && res.ok) cache.put(req, res.clone()); return res; });
-    const cached = await cache.match(req, {ignoreSearch: true});
-    if (!cached) return net.catch(() => req.mode === "navigate" ? cache.match("app.html").then(r => r || cache.match("app/")) : Response.error());
-    const timer = new Promise(res => setTimeout(() => res(cached), TIMEOUT));
-    return Promise.race([net.catch(() => cached), timer]);
-  })());
-});
+/* © 2026 Flipkontor · Alle Rechte vorbehalten. Kopieren, Weitergeben und Weiterverkaufen nicht erlaubt. */
+const CACHE="flipkontor-v7",START=["./","index.html","app.html","app/","impressum.html","datenschutz.html","nutzungsbedingungen.html","manifest.webmanifest","icon-180.png","icon-512.png"],TIMEOUT=4e3;self.addEventListener("install",(e=>{e.waitUntil(caches.open(CACHE).then((e=>Promise.all(START.map((t=>fetch(t,{cache:"no-cache"}).then(clean).then((a=>a.ok&&e.put(t,a))).catch((()=>null))))))).then((()=>self.skipWaiting())))})),self.addEventListener("activate",(e=>{e.waitUntil(caches.keys().then((e=>Promise.all(e.filter((e=>e!==CACHE)).map((e=>caches.delete(e)))))).then((()=>self.clients.claim())))}));const clean=async e=>e&&e.redirected?new Response(await e.blob(),{status:e.status,statusText:e.statusText,headers:e.headers}):e;self.addEventListener("fetch",(e=>{const t=e.request,a=new URL(t.url);"GET"===t.method&&a.origin===location.origin&&e.respondWith((async()=>{const e=await caches.open(CACHE),a=fetch(t.url,{cache:"no-cache",credentials:"same-origin"}).then(clean).then((a=>(a&&a.ok&&e.put(t,a.clone()),a))),n=await clean(await e.match(t,{ignoreSearch:!0}));if(!n)return a.catch((async()=>"navigate"===t.mode?clean(await e.match("app.html")||await e.match("app/")):Response.error()));const c=new Promise((e=>setTimeout((()=>e(n)),4e3)));return Promise.race([a.catch((()=>n)),c])})())}));
